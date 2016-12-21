@@ -12,13 +12,15 @@
         android:layout_height="70dp"> <!-- TODO: Alterar para uma medida convencional -->
 
         <Button
+            android:id="@+id/btnPreviousDifficulty"
+
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/ic_keyboard_arrow_left_black_36dp"/>
 
         <Button
-            android:id="@+id/angry_btn"
+            android:id="@+id/btnStartGame"
 
             android:text="Medium"
             android:textColor="#DEDEDE"
@@ -35,6 +37,8 @@
             />
 
         <Button
+            android:id="@+id/btnNextDifficulty"
+
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -43,6 +47,8 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/btnSettings"
+
         android:layout_marginTop="20dp"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -60,17 +66,43 @@
         android:textStyle="bold"/>
 
     <TextView
+        android:id="@+id/txt_highestScore"
         android:layout_marginTop="10dp"
         android:minWidth="200dp"
         android:maxLines="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999"
+
+        android:text=""
         android:textSize="30sp"
         android:textColor="@android:color/black"
         android:gravity="center"
         android:background="@drawable/boxshape"/>
 
+    <TextView
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Answer Streak"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/txt_answerStreak"
+        android:layout_marginTop="10dp"
+        android:minWidth="200dp"
+        android:maxLines="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        android:text=""
+        android:textSize="30sp"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        android:background="@drawable/boxshape"/>
 
 </LinearLayout>
