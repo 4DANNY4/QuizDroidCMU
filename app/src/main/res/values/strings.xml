@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">QuizDroidCMU</string>
+
+    <!-- layout/activity_menu.xml -->
+    <string name="mainQuizDroid">QuizDroid</string>
+    <string name="mainStart">Tap to start</string>
+
+    QuizDroid
+    <!-- layout/activity_menu.xml -->
+    <string name="menuHighestScore">Highest Score</string>
+    <string name="menuAnswerStreak">Answer Streak</string>
+
+    <!-- xml/preference.xml -->
+    <string name="preferenceDificulty">Dificulty</string>
+    <string name="defaultDificulty">Medium</string>
+
 </resources>

@@ -22,7 +22,6 @@
         <Button
             android:id="@+id/btnStartGame"
 
-            android:text="Medium"
             android:textColor="#DEDEDE"
             android:textSize="30sp"
 
@@ -59,14 +58,14 @@
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Highest Score"
+        android:text="@string/menuHighestScore"
         android:textSize="25sp"
         android:gravity="center"
         android:textColor="@android:color/black"
         android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/txt_highestScore"
+        android:id="@+id/txtHighestScore"
         android:layout_marginTop="10dp"
         android:minWidth="200dp"
         android:maxLines="1"
@@ -84,14 +83,14 @@
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Answer Streak"
+        android:text="@string/menuAnswerStreak"
         android:textSize="25sp"
         android:gravity="center"
         android:textColor="@android:color/black"
         android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/txt_answerStreak"
+        android:id="@+id/txtAnswerStreak"
         android:layout_marginTop="10dp"
         android:minWidth="200dp"
         android:maxLines="1"
