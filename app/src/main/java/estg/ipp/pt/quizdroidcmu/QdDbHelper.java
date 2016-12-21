@@ -5,10 +5,6 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by Tiago Fernandes on 21/12/2016.
- */
-
 public class QdDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "QuizDroid.db";

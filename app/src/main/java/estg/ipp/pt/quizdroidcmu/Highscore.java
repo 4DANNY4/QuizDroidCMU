@@ -1,9 +1,5 @@
 package estg.ipp.pt.quizdroidcmu;
 
-/**
- * Created by Tiago Fernandes on 20/12/2016.
- */
-
 public class Highscore {
 
     private int id;
