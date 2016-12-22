@@ -16,7 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MenuActivity" />
-        <activity android:name=".QuizActivity"></activity>
+        <activity android:name=".QuizActivity"/>
+        <activity android:name=".PreferencesActivityHoneycomb"/>
     </application>
 
 </manifest>
