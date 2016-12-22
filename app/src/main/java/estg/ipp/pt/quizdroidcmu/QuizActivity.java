@@ -29,27 +29,20 @@ public class QuizActivity extends AppCompatActivity {
 
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String sql =
-                "SELECT *" +
-                        " FROM" +
-                            " SELECT *" +
-                                    " FROM tblQuestion INNER JOIN (" +
-                                                        " SELECT *" +
-                                                        " FROM tblDifficulty" +
-                                                        " WHERE id='" + difficulty.getId() + "')" +
-                                    " ON tblQuestion.questionDifficulty = tblDifficulty.id" +
-                        " INNER JOIN tblAnswers" +
-                        " ON tblQuestion.answers = tblAnswers.id";
-
+        String sql = "SELECT * FROM tblQuestion LEFT JOIN tblAnswers ON tblQuestion.answers = tblAnswers.id WHERE tblQuestion.questionDifficulty = '" + difficulty.getId() + "'";
         Cursor c = db.rawQuery(sql,null);
         if (c != null && c.moveToFirst()){
             do {
-                mQuiz.add(new Question(c.getInt(0),c.getInt(1),c.getInt(2),c.getString(3),c.getInt(4),c.getInt(5)));
+                //mQuiz.add(new Question());
             }while (c.moveToNext());
         }
         dbHelper.close();
         db.close();
     }
 
+    private void nextQuestion(){
+        int min = 0;
+        int max = 0 ;
 
+    }
 }
