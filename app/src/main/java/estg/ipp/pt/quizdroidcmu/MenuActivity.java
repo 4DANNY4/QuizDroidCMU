@@ -17,7 +17,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     private ArrayList<Difficulty> mDifficulty = new ArrayList<>();
 
-    private Button btn_StartGame, btn_NextDifficulty, btn_PreviousDifficulty;
+    private Button btn_StartGame, btn_NextDifficulty, btn_PreviousDifficulty, btn_Settings;
     private TextView txt_highestScore, txt_answerStreak;
     private Difficulty difficulty;
 
@@ -40,6 +40,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         btn_StartGame = (Button) findViewById(R.id.btnStartGame);
         btn_StartGame.setOnClickListener(this);
 
+        btn_Settings = (Button) findViewById(R.id.btnSettings);
+        btn_Settings.setOnClickListener(this);
+
         difficulty = mDifficulty.get(1);
         btn_StartGame.setText(difficulty.getName());
 
@@ -58,7 +61,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String sql = "SELECT * FROM tblDifficulty";
+        String sql = "SELECT * FROM tblDifficulties";
 
         Cursor c = db.rawQuery(sql,null);
         if (c != null && c.moveToFirst()){
@@ -91,7 +94,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             }
 
         }else if(view.getId() == R.id.btnSettings){
-
+            Intent newIntent = new Intent(this, PreferencesActivityHoneycomb.class);
+            startActivity(newIntent);
         }else if(view.getId() == R.id.btnStartGame){
             Intent newIntent = new Intent(this, QuizActivity.class);
             startActivity(newIntent);
