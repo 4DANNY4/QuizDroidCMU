@@ -1,5 +1,6 @@
 package estg.ipp.pt.quizdroidcmu;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -92,6 +93,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         }else if(view.getId() == R.id.btnSettings){
 
         }else if(view.getId() == R.id.btnStartGame){
+            Intent newIntent = new Intent(this, QuizActivity.class);
+            startActivity(newIntent);
 
         }
     }
