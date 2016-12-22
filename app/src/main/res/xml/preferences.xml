@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Manage Questions">
-        <Preference android:title="Add" android:key="btnAddPref" android:summary="Add a new Question" />
-        <Preference android:title="Edit" android:key="btnEditPref" android:summary="Edit a Question" />
-        <Preference android:title="Remove" android:key="btnRemovePref" android:summary="Remove a Question" />
-        <Preference android:title="List" android:key="btnListPref" android:summary="List all Questions" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="Manage Difficulties">
-        <Preference android:title="Add" android:key="btnAddPref" android:summary="Add a new Difficulty" />
-        <Preference android:title="Edit" android:key="btnEditPref" android:summary="Edit a Difficulty" />
-        <Preference android:title="Remove" android:key="btnRemovePref" android:summary="Remove a Difficulty" />
-        <Preference android:title="List" android:key="btnListPref" android:summary="List all Difficulties" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="Manage Categories">
-        <Preference android:title="Add" android:key="btnAddPref" android:summary="Add a new Category" />
-        <Preference android:title="Edit" android:key="btnEditPref" android:summary="Edit a Category" />
-        <Preference android:title="Remove" android:key="btnRemovePref" android:summary="Remove a Category" />
-        <Preference android:title="List" android:key="btnListPref" android:summary="List all Categories" />
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory android:title="Game Settings">
+        <CheckBoxPreference android:title="Help activated" android:summary="Activates Help feature."
+            android:key="pref_activateHelp" android:defaultValue="true"/>
+        <Preference android:key="pref_key_manageQuestion"
+            android:title="Manage Questions"/>
+        <Preference android:key="pref_key_manageDifficulties"
+            android:title="Manage Difficulties"/>
+        <Preference android:key="pref_key_manageCategories"
+            android:title="Manage Categories"/>
     </PreferenceCategory>
 </PreferenceScreen>
