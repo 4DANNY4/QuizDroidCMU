@@ -3,12 +3,12 @@ package estg.ipp.pt.quizdroidcmu;
 public class Highscore {
 
     private int id;
-    private int playerName;
+    private String playerName;
     private Difficulty difficulty;
     private int correctAnswers;
     private int score;
 
-    public Highscore(int id, int playerName, Difficulty difficulty, int correctAnswers, int score) {
+    public Highscore(int id, String playerName, Difficulty difficulty, int correctAnswers, int score) {
         this.id = id;
         this.playerName = playerName;
         this.difficulty = difficulty;
@@ -24,11 +24,11 @@ public class Highscore {
         this.id = id;
     }
 
-    public int getPlayerName() {
+    public String getPlayerName() {
         return playerName;
     }
 
-    public void setPlayerName(int playerName) {
+    public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
 

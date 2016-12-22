@@ -11,11 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ArrayList<Difficulty> mDifficulty = new ArrayList<>();
+    private ArrayList<Highscore> mHighscores = new ArrayList<>();
 
     private Button btn_StartGame, btn_NextDifficulty, btn_PreviousDifficulty, btn_Settings;
     private TextView txt_highestScore, txt_answerStreak;
@@ -43,16 +45,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         btn_Settings = (Button) findViewById(R.id.btnSettings);
         btn_Settings.setOnClickListener(this);
 
-        difficulty = mDifficulty.get(1);
-        btn_StartGame.setText(difficulty.getName());
-
         txt_highestScore = (TextView) findViewById(R.id.txtHighestScore);
         txt_answerStreak = (TextView) findViewById(R.id.txtAnswerStreak);
 
-        mSettings = PreferenceManager.getDefaultSharedPreferences(this);
-        preference = mSettings.getString("pref_dificulty","ERRO");
-
-        txt_highestScore.setText(preference);
+        setdefault();
 
     }
 
@@ -61,16 +57,37 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String sql = "SELECT * FROM tblDifficulties";
+        String sqlD = "SELECT * FROM tblDifficulties";
 
-        Cursor c = db.rawQuery(sql,null);
-        if (c != null && c.moveToFirst()){
+        Cursor cD = db.rawQuery(sqlD,null);
+        if (cD != null && cD.moveToFirst()){
             do {
-                mDifficulty.add(new Difficulty(c.getInt(0),c.getString(1),c.getString(2)));
-            }while (c.moveToNext());
+                mDifficulty.add(new Difficulty(cD.getInt(0),cD.getString(1),cD.getString(2)));
+            }while (cD.moveToNext());
         }
+
+        for (Difficulty difi : mDifficulty){
+            String sqlH = "SELECT *, MAX(score) As score FROM tblHighscores WHERE tblHighscores.difficultyID = " + difi.getId();
+            Cursor cH = db.rawQuery(sqlH,null);
+            if (cH != null && cH.moveToFirst()){
+                do {
+                    mHighscores.add(new Highscore(cH.getInt(0),cH.getString(1),difi,cH.getInt(3),cH.getInt(4)));
+                }while (cH.moveToNext());
+            }
+        }
+
         dbHelper.close();
         db.close();
+    }
+
+    private void setdefault(){
+        difficulty = mDifficulty.get(0);
+        btn_StartGame.setText(difficulty.getName());
+        for (Highscore h : mHighscores){
+            if(h.getDifficulty().getId() == difficulty.getId()){
+                txt_highestScore.setText("" + h.getScore());
+            }
+        }
     }
 
     @Override
@@ -83,7 +100,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 difficulty = mDifficulty.get(difficulty.getId());
                 btn_StartGame.setText(difficulty.getName());
             }
-
         }else if(view.getId() == R.id.btnPreviousDifficulty){
             if(difficulty.getId() == 1){
                 difficulty = mDifficulty.get(mDifficulty.size() - 1);
@@ -92,14 +108,22 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 difficulty = mDifficulty.get(difficulty.getId() - 2);
                 btn_StartGame.setText(difficulty.getName());
             }
-
         }else if(view.getId() == R.id.btnSettings){
             Intent newIntent = new Intent(this, PreferencesActivityHoneycomb.class);
             startActivity(newIntent);
         }else if(view.getId() == R.id.btnStartGame){
             Intent newIntent = new Intent(this, QuizActivity.class);
+            newIntent.putExtra("DifficultyID", difficulty.getId());
+            newIntent.putExtra("DifficultyName", difficulty.getName());
+            newIntent.putExtra("DifficultyDescription", difficulty.getDescription());
             startActivity(newIntent);
 
+        }
+
+        for (Highscore h : mHighscores){
+            if(h.getId() == difficulty.getId()){
+                txt_highestScore.setText("" + h.getScore());
+            }
         }
     }
 }

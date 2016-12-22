@@ -18,6 +18,15 @@ public class Question {
         this.reward = reward;
     }
 
+    public Question(Question newQuestion){
+        this.id = newQuestion.getId();
+        this.text = newQuestion.getText();
+        this.difficulty = newQuestion.getDifficulty();
+        this.answers = newQuestion.getAnswers();
+        this.correctAnswer = newQuestion.getCorrectAnswer();
+        this.reward = newQuestion.getReward();
+    }
+
     public int getId() {
         return id;
     }

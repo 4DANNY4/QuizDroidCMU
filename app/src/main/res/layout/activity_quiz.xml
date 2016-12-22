@@ -11,26 +11,26 @@
         android:layout_height="wrap_content"
         android:text="Prgunta"/>
 
-    <TextView
-        android:id="@+id/txtAnswer1"
+    <Button
+        android:id="@+id/btnAnswer1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Answer1"/>
 
-    <TextView
-        android:id="@+id/txtAnswer2"
+    <Button
+        android:id="@+id/btnAnswer2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Answer2"/>
 
-    <TextView
-        android:id="@+id/txtAnswer3"
+    <Button
+        android:id="@+id/btnAnswer3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Answer3"/>
 
-    <TextView
-        android:id="@+id/txtAnswer4"
+    <Button
+        android:id="@+id/btnAnswer4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Answer4"/>
