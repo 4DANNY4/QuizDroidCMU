@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Manage Questions">
+        <PreferenceScreen android:title="Question Manager">
+            <Preference android:title="Add" android:key="btnAddPref" android:summary="Add a new Question" />
+            <Preference android:title="Edit" android:key="btnEditPref" android:summary="Edit a Question" />
+            <Preference android:title="Remove" android:key="btnRemovePref" android:summary="Remove a Question" />
+            <Preference android:title="List" android:key="btnListPref" android:summary="List all Questions" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Manage Difficulties">
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Manage Categories">
+
+    </PreferenceCategory>
+</PreferenceScreen>
