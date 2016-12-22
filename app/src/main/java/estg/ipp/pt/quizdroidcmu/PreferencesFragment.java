@@ -22,7 +22,7 @@ public class PreferencesFragment extends PreferenceFragment implements Preferenc
         Preference manageDifficulties = findPreference("pref_key_manageDifficulties");
         manageDifficulties.setOnPreferenceClickListener(this);
         Preference manageCategories = findPreference("pref_key_manageCategories");
-        manageCategories.setOnPreferenceClickListener(this);
+        //manageCategories.setOnPreferenceClickListener(this);
     }
 
     @Override

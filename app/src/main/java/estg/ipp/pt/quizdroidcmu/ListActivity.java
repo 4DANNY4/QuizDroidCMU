@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -24,15 +25,17 @@ public class ListActivity extends android.app.ListActivity {
         setContentView(R.layout.activity_list);
 
         toList = getIntent().getStringExtra("ItemToList");
-
+        TextView txt_title = (TextView) findViewById(R.id.txt_title);
         if(toList.equals("questions")) {
+            txt_title.setText("Questions");
             qAdapter = new QuestionAdapter(ListActivity.this, qList);
             setListAdapter(qAdapter);
         } else if (toList.equals("difficulties")) {
+            txt_title.setText("Difficulties");
             dAdapter = new DifficultyAdapter(ListActivity.this, dList);
             setListAdapter(dAdapter);
         } else if (toList.equals("categories")) {
-
+            txt_title.setText("Categories");
         }
     }
 
