@@ -35,4 +35,28 @@
         android:layout_height="wrap_content"
         android:text="Answer4"/>
 
+    <Button
+        android:id="@+id/btnHelp1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Help1 : 50/50"/>
+
+    <Button
+        android:id="@+id/btnHelp2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Help2"/>
+
+    <Button
+        android:id="@+id/btnHelp3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Help3"/>
+
+    <Button
+        android:id="@+id/btnHelp4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Help4"/>
+
 </LinearLayout>

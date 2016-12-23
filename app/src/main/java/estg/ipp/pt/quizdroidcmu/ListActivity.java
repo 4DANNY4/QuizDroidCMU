@@ -71,7 +71,7 @@ public class ListActivity extends android.app.ListActivity {
         if(c != null && c.moveToFirst()) {
             do {
                 if(toList.equals("questions")) {
-                    String[] answers = {c.getString(6), c.getString(7), c.getString(8), c.getString(9)};
+                    String[] answers = {c.getString(7), c.getString(8), c.getString(9), c.getString(10)};
                     //Get Difficulty from DB
                     sql = "SELECT * FROM tblDifficulties WHERE tblDifficulties.id=" + c.getInt(1);
                     Cursor c2 = db.rawQuery(sql, null);

@@ -4,20 +4,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ArrayList<Difficulty> mDifficulty = new ArrayList<>();
-    private ArrayList<Highscore> mHighscores = new ArrayList<>();
+    private ArrayList<Highscore> mScores = new ArrayList<>();
+    private ArrayList<Highscore> mCorrectAnswers = new ArrayList<>();
 
     private Button btn_StartGame, btn_NextDifficulty, btn_PreviousDifficulty, btn_Settings;
     private TextView txt_highestScore, txt_answerStreak;
@@ -57,22 +56,29 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String sqlD = "SELECT * FROM tblDifficulties";
+        String sql = "SELECT * FROM tblDifficulties";
 
-        Cursor cD = db.rawQuery(sqlD,null);
-        if (cD != null && cD.moveToFirst()){
+        Cursor c = db.rawQuery(sql,null);
+        if (c != null && c.moveToFirst()){
             do {
-                mDifficulty.add(new Difficulty(cD.getInt(0),cD.getString(1),cD.getString(2)));
-            }while (cD.moveToNext());
+                mDifficulty.add(new Difficulty(c.getInt(0),c.getString(1),c.getString(2)));
+            }while (c.moveToNext());
         }
 
         for (Difficulty difi : mDifficulty){
-            String sqlH = "SELECT *, MAX(score) As score FROM tblHighscores WHERE tblHighscores.difficultyID = " + difi.getId();
-            Cursor cH = db.rawQuery(sqlH,null);
-            if (cH != null && cH.moveToFirst()){
+            sql = "SELECT *, MAX(score) As score FROM tblHighscores WHERE tblHighscores.difficultyID = " + difi.getId();
+            c = db.rawQuery(sql,null);
+            if (c != null && c.moveToFirst()){
                 do {
-                    mHighscores.add(new Highscore(cH.getInt(0),cH.getString(1),difi,cH.getInt(3),cH.getInt(4)));
-                }while (cH.moveToNext());
+                    mScores.add(new Highscore(c.getInt(0),c.getString(1),difi,c.getInt(3),c.getInt(4)));
+                }while (c.moveToNext());
+            }
+            sql = "SELECT *, MAX(correctAnswers) As score FROM tblHighscores WHERE tblHighscores.difficultyID = " + difi.getId();
+            c = db.rawQuery(sql,null);
+            if (c != null && c.moveToFirst()){
+                do {
+                    mCorrectAnswers.add(new Highscore(c.getInt(0),c.getString(1),difi,c.getInt(3),c.getInt(4)));
+                }while (c.moveToNext());
             }
         }
 
@@ -83,9 +89,16 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     private void setdefault(){
         difficulty = mDifficulty.get(0);
         btn_StartGame.setText(difficulty.getName());
-        for (Highscore h : mHighscores){
+        for (Highscore h : mScores){
             if(h.getDifficulty().getId() == difficulty.getId()){
                 txt_highestScore.setText("" + h.getScore());
+                break;
+            }
+        }
+        for (Highscore h : mCorrectAnswers){
+            if(h.getDifficulty().getId() == difficulty.getId()){
+                txt_answerStreak.setText("" + h.getCorrectAnswers());
+                break;
             }
         }
     }
@@ -120,9 +133,16 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
-        for (Highscore h : mHighscores){
+        for (Highscore h : mScores){
             if(h.getId() == difficulty.getId()){
                 txt_highestScore.setText("" + h.getScore());
+                break;
+            }
+        }
+        for (Highscore h : mCorrectAnswers){
+            if(h.getId() == difficulty.getId()){
+                txt_answerStreak.setText("" + h.getCorrectAnswers());
+                break;
             }
         }
     }
