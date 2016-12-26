@@ -18,7 +18,11 @@
         <activity android:name=".MenuActivity" />
         <activity android:name=".QuizActivity" />
         <activity android:name=".PreferencesActivityHoneycomb" />
-        <activity android:name=".ListActivity"></activity>
+        <activity android:name=".ListActivity" />
+        <activity android:name=".AddEditQuestion"></activity>
+        <activity android:name=".ListActivity" />
+        <activity android:name=".GameContainer" />
+        <activity android:name=".ScoreActivity"></activity>
     </application>
 
 </manifest>
