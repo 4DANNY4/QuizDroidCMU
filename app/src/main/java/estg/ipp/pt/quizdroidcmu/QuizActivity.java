@@ -25,7 +25,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private TextView txt_question;
     private Button btn_Answer1, btn_Answer2, btn_Answer3, btn_Answer4;
     private Button btn_Help1, btn_Help2, btn_Help3, btn_Help4;
-    private Button btn_dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +59,9 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         btn_Help4 = (Button) findViewById(R.id.btnHelp4);
         btn_Help4.setOnClickListener(this);
 
-        do{
+        //do{
             showDialog();
-        }while (gameTable.getPlayerName() == "");
+        //}while (gameTable.getPlayerName() == "");
 
         initData();
         nextQuestion();
@@ -75,7 +74,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String sql = "SELECT * FROM tblQuestions LEFT JOIN tblAnswers ON tblQuestions.answerID = tblAnswers.id WHERE tblQuestions.difficultyID = '" + (difficulty.getId() - 1)  + "'";
+        String sql = "SELECT * FROM tblQuestions LEFT JOIN tblAnswers ON tblQuestions.answerID = tblAnswers.id WHERE tblQuestions.difficultyID = '" + (difficulty.getId())  + "'";
         Cursor c = db.rawQuery(sql,null);
         if (c != null && c.moveToFirst()){
             do {
@@ -209,13 +208,13 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btnAnswer1){
-            setScores(0);
-        } else if(view.getId() == R.id.btnAnswer2){
             setScores(1);
-        } else if(view.getId() == R.id.btnAnswer3){
+        } else if(view.getId() == R.id.btnAnswer2){
             setScores(2);
-        } else if(view.getId() == R.id.btnAnswer4){
+        } else if(view.getId() == R.id.btnAnswer3){
             setScores(3);
+        } else if(view.getId() == R.id.btnAnswer4){
+            setScores(4);
         } else if(view.getId() == R.id.btnHelp1){
             helpFiftyFifty();
         } else if(view.getId() == R.id.btnHelp2){
