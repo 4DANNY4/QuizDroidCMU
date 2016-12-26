@@ -25,7 +25,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private TextView txt_question;
     private Button btn_Answer1, btn_Answer2, btn_Answer3, btn_Answer4;
     private Button btn_Help1, btn_Help2, btn_Help3, btn_Help4;
-    private Button btn_dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +59,20 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         btn_Help4 = (Button) findViewById(R.id.btnHelp4);
         btn_Help4.setOnClickListener(this);
 
-        do{
-            showDialog();
-        }while (gameTable.getPlayerName() == "");
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final EditText input = new EditText(this);
+        final String txt = "Player Name:";
+        alert.setCancelable(false);
+        alert.setTitle(txt);
+        alert.setView(input);
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                gameTable.setPlayerName(input.getText().toString().trim());
+                Toast.makeText(getApplicationContext(), "Player: " + gameTable.getPlayerName(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        alert.show();
 
         initData();
         nextQuestion();
@@ -85,23 +95,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }
         dbHelper.close();
         db.close();
-    }
-
-    private void showDialog(){
-        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        final EditText input = new EditText(this);
-        final String txt = "Player Name:";
-        alert.setCancelable(false);
-        alert.setTitle(txt);
-        alert.setView(input);
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                gameTable.setPlayerName(input.getText().toString().trim());
-                Toast.makeText(getApplicationContext(), "Player: " + gameTable.getPlayerName(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-        alert.show();
     }
 
     private void nextQuestion(){
@@ -127,6 +120,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             newIntent.putExtra("ScoreCorrectAnswers", gameTable.getCorrectAnswers());
             newIntent.putExtra("Score", gameTable.getScore());
             startActivity(newIntent);
+            finish();
         }
     }
 
@@ -209,13 +203,13 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btnAnswer1){
-            setScores(0);
-        } else if(view.getId() == R.id.btnAnswer2){
             setScores(1);
-        } else if(view.getId() == R.id.btnAnswer3){
+        } else if(view.getId() == R.id.btnAnswer2){
             setScores(2);
-        } else if(view.getId() == R.id.btnAnswer4){
+        } else if(view.getId() == R.id.btnAnswer3){
             setScores(3);
+        } else if(view.getId() == R.id.btnAnswer4){
+            setScores(4);
         } else if(view.getId() == R.id.btnHelp1){
             helpFiftyFifty();
         } else if(view.getId() == R.id.btnHelp2){
