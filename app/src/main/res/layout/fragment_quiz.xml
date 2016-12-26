@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Prgunta"/>
+
+    <Button
+        android:id="@+id/btnAnswer1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Answer1"/>
+
+    <Button
+        android:id="@+id/btnAnswer2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Answer2"/>
+
+    <Button
+        android:id="@+id/btnAnswer3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Answer3"/>
+
+    <Button
+        android:id="@+id/btnAnswer4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Answer4"/>
+
+    <Button
+        android:id="@+id/btnHelp1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Help1 : 50/50"/>
+
+    <Button
+        android:id="@+id/btnHelp2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Help2"/>
+
+    <Button
+        android:id="@+id/btnHelp3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Help3"/>
+
+    <Button
+        android:id="@+id/btnHelp4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Help4"/>
+
+</LinearLayout>

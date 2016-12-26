@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_score"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtScorePlayerName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Player name"/>
+
+    <TextView
+        android:id="@+id/txtScoreDifficulty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Difficulty"/>
+    <TextView
+        android:id="@+id/txtScoreCorrectAnswers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CorrectAnswers"/>
+    <TextView
+        android:id="@+id/txtScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Score"/>
+
+</LinearLayout>

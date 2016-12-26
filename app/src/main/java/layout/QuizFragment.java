@@ -1,22 +1,30 @@
-package estg.ipp.pt.quizdroidcmu;
+package layout;
 
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class QuizActivity extends AppCompatActivity implements View.OnClickListener{
+import estg.ipp.pt.quizdroidcmu.Difficulty;
+import estg.ipp.pt.quizdroidcmu.Highscore;
+import estg.ipp.pt.quizdroidcmu.QdDbHelper;
+import estg.ipp.pt.quizdroidcmu.Question;
+import estg.ipp.pt.quizdroidcmu.R;
+
+public class QuizFragment extends Fragment implements View.OnClickListener{
+
+    private OnFragmentInteractionListener mListener;
 
     private ArrayList<Question> mQuiz = new ArrayList<>();
     private Highscore gameTable;
@@ -25,55 +33,63 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private TextView txt_question;
     private Button btn_Answer1, btn_Answer2, btn_Answer3, btn_Answer4;
     private Button btn_Help1, btn_Help2, btn_Help3, btn_Help4;
-    private Button btn_dialog;
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteractionListener(Highscore h);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quiz);
 
-        Intent intent = getIntent();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View mContentView = inflater.inflate(R.layout.fragment_quiz,container,false);
+
+        Intent intent = getActivity().getIntent();
         difficulty = new Difficulty(
                 (int) intent.getSerializableExtra("DifficultyID"),
                 (String) intent.getSerializableExtra("DifficultyName"),
                 (String) intent.getSerializableExtra("DifficultyDescription")
         );
 
-        gameTable = new Highscore( 0, "", difficulty, 0, 0);
+        gameTable = new Highscore( 0, "NULL", difficulty, 0, 0);
 
-        txt_question = (TextView) findViewById(R.id.txtQuestion);
+        txt_question = (TextView) mContentView.findViewById(R.id.txtQuestion);
 
-        btn_Answer1 = (Button) findViewById(R.id.btnAnswer1);
+        btn_Answer1 = (Button) mContentView.findViewById(R.id.btnAnswer1);
         btn_Answer1.setOnClickListener(this);
-        btn_Answer2 = (Button) findViewById(R.id.btnAnswer2);
+        btn_Answer2 = (Button) mContentView.findViewById(R.id.btnAnswer2);
         btn_Answer2.setOnClickListener(this);
-        btn_Answer3 = (Button) findViewById(R.id.btnAnswer3);
+        btn_Answer3 = (Button) mContentView.findViewById(R.id.btnAnswer3);
         btn_Answer3.setOnClickListener(this);
-        btn_Answer4 = (Button) findViewById(R.id.btnAnswer4);
+        btn_Answer4 = (Button) mContentView.findViewById(R.id.btnAnswer4);
         btn_Answer4.setOnClickListener(this);
-        btn_Help1 = (Button) findViewById(R.id.btnHelp1);
+        btn_Help1 = (Button) mContentView.findViewById(R.id.btnHelp1);
         btn_Help1.setOnClickListener(this);
-        btn_Help2 = (Button) findViewById(R.id.btnHelp2);
+        btn_Help2 = (Button) mContentView.findViewById(R.id.btnHelp2);
         btn_Help2.setOnClickListener(this);
-        btn_Help3 = (Button) findViewById(R.id.btnHelp3);
+        btn_Help3 = (Button) mContentView.findViewById(R.id.btnHelp3);
         btn_Help3.setOnClickListener(this);
-        btn_Help4 = (Button) findViewById(R.id.btnHelp4);
+        btn_Help4 = (Button) mContentView.findViewById(R.id.btnHelp4);
         btn_Help4.setOnClickListener(this);
-
-        do{
-            showDialog();
-        }while (gameTable.getPlayerName() == "");
 
         initData();
         nextQuestion();
         setGameTable();
 
+
+        return mContentView;
     }
 
     private void initData(){
         mQuiz.clear();
 
-        QdDbHelper dbHelper = new QdDbHelper(this);
+        QdDbHelper dbHelper = new QdDbHelper(this.getContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String sql = "SELECT * FROM tblQuestions LEFT JOIN tblAnswers ON tblQuestions.answerID = tblAnswers.id WHERE tblQuestions.difficultyID = '" + (difficulty.getId() - 1)  + "'";
         Cursor c = db.rawQuery(sql,null);
@@ -85,23 +101,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }
         dbHelper.close();
         db.close();
-    }
-
-    private void showDialog(){
-        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        final EditText input = new EditText(this);
-        final String txt = "Player Name:";
-        alert.setCancelable(false);
-        alert.setTitle(txt);
-        alert.setView(input);
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                gameTable.setPlayerName(input.getText().toString().trim());
-                Toast.makeText(getApplicationContext(), "Player: " + gameTable.getPlayerName(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-        alert.show();
     }
 
     private void nextQuestion(){
@@ -121,17 +120,12 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
             mQuiz.remove(rand);
         }else{
-            Intent newIntent = new Intent(this, ScoreActivity.class);
-            newIntent.putExtra("ScorePlayerName", gameTable.getPlayerName());
-            newIntent.putExtra("ScoreDifficulty", gameTable.getDifficulty().getName());
-            newIntent.putExtra("ScoreCorrectAnswers", gameTable.getCorrectAnswers());
-            newIntent.putExtra("Score", gameTable.getScore());
-            startActivity(newIntent);
+            //END GAME
         }
     }
 
     private void setGameTable(){
-        QdDbHelper dbHelper = new QdDbHelper(this);
+        QdDbHelper dbHelper = new QdDbHelper(this.getContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String sql = "INSERT INTO tblGames(playerName, difficultyID, correctAnswers, score)" +
                 " VALUES('" + gameTable.getPlayerName() + "','" + difficulty.getId() + "','0','0')";
@@ -149,7 +143,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             //Dialog correct answer
             gameTable.setScore(gameTable.getScore()+randQuestion.getReward());
             gameTable.setCorrectAnswers(gameTable.getCorrectAnswers()+1);
-            QdDbHelper dbHelper = new QdDbHelper(this);
+            QdDbHelper dbHelper = new QdDbHelper(this.getContext());
             SQLiteDatabase db = dbHelper.getReadableDatabase();
             String sql = "UPDATE tblGames SET score = '" + gameTable.getScore() +
                     "', correctAnswers = '" + gameTable.getCorrectAnswers() +
@@ -225,5 +219,22 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         } else if(view.getId() == R.id.btnHelp4){
 
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 }

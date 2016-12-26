@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import layout.QuizFragment;
+
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ArrayList<Difficulty> mDifficulty = new ArrayList<>();
