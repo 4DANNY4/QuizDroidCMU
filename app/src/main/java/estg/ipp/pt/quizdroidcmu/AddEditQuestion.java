@@ -11,11 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class AddEditQuestion extends AppCompatActivity implements View.OnClickListener{
 
+    private TextView title;
     private EditText question;
     private Spinner difficulty;
     private EditText answer1;
@@ -40,6 +43,7 @@ public class AddEditQuestion extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_question);
 
+        title = (TextView) findViewById(R.id.tv_manTitle);
         question = (EditText) findViewById(R.id.txt_question);
         difficulty = (Spinner) findViewById(R.id.spin_difficulty);
         answer1 = (EditText) findViewById(R.id.txt_answer1);
@@ -54,23 +58,27 @@ public class AddEditQuestion extends AppCompatActivity implements View.OnClickLi
         btnEdit = (Button) findViewById(R.id.btnEdit);
         btnEdit.setOnClickListener(this);
 
-        dAdapter = new ArrayAdapter<>(AddEditQuestion.this, android.R.layout.simple_spinner_dropdown_item, dList);
+        dAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, dList);
         difficulty.setAdapter(dAdapter);
         ArrayAdapter<CharSequence> answerNum = ArrayAdapter.createFromResource(this, R.array.numAnswers, android.R.layout.simple_spinner_item);
         correctAnswer.setAdapter(answerNum);
 
         action = getIntent().getStringExtra("Action");
         if(action.equals("Add")) {
+            title.setText("Add Question");
             btnAdd.setVisibility(View.VISIBLE);
         } else if(action.equals("Edit")) {
+            title.setText("Edit Question");
             questionIDtoEdit = getIntent().getIntExtra("ID", 1);
-            difficulty.setSelection(getIntent().getIntExtra("DIFFID", 1));
+            int diffid = getIntent().getIntExtra("DIFFID",1);
+            difficulty.setSelection(diffid-1);
             question.setText(getIntent().getStringExtra("QUESTION"));
             answer1.setText(getIntent().getStringExtra("ANSWER1"));
             answer2.setText(getIntent().getStringExtra("ANSWER2"));
             answer3.setText(getIntent().getStringExtra("ANSWER3"));
             answer4.setText(getIntent().getStringExtra("ANSWER4"));
-            correctAnswer.setSelection(getIntent().getIntExtra("CORRECTANSWER", 1));
+            int correctid = getIntent().getIntExtra("CORRECTANSWER",1);
+            correctAnswer.setSelection(correctid-1);
             reward.setText(String.valueOf(getIntent().getIntExtra("REWARD", 100)));
             btnEdit.setVisibility(View.VISIBLE);
         }
@@ -105,10 +113,14 @@ public class AddEditQuestion extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         if(v.getId() == R.id.btnAdd) {
             add();
-            this.finish();
+            Toast doneToast = Toast.makeText(this, "Added!", Toast.LENGTH_SHORT);
+            doneToast.show();
+            finish();
         } else if(v.getId() == R.id.btnEdit) {
             add();
-            this.finish();
+            Toast doneToast = Toast.makeText(this, "Updated!", Toast.LENGTH_SHORT);
+            doneToast.show();
+            finish();
         }
     }
 
@@ -121,9 +133,9 @@ public class AddEditQuestion extends AppCompatActivity implements View.OnClickLi
         String getDifIDsql = "SELECT * FROM tblDifficulties WHERE tblDifficulties.name='" + difficulty.getSelectedItem().toString() + "'";
         Cursor c = db.rawQuery(getDifIDsql, null);
         if(c != null && c.moveToFirst()) {
-            do {
-                difID = c.getInt(0);
-            } while(c.moveToNext());
+            difID = c.getInt(0);
+        } else {
+            System.out.println("########ERROR: difficulty id error");
         }
         if(action.equals("Add")) { //TO ADD
             String inSqlAnswers = "INSERT INTO tblAnswers(answers1, answers2, answers3, answers4)" +
@@ -136,9 +148,9 @@ public class AddEditQuestion extends AppCompatActivity implements View.OnClickLi
             int ansId = -1;
             Cursor c2 = db.rawQuery(getAnswerIDsql, null);
             if(c2 != null && c2.moveToFirst()) {
-                do {
-                    ansId = c2.getInt(0);
-                } while(c2.moveToNext());
+                ansId = c2.getInt(0);
+            } else {
+                System.out.println("###########ERROR: ANSWER ID ERROR!");
             }
             String inSqlquestion = "INSERT INTO tblQuestions(difficultyID, text, answerID, rightAnswer, reward)" +
                     " VALUES('"+difID+"','"+question.getText().toString()+"','"+ansId+"','"+
@@ -151,24 +163,24 @@ public class AddEditQuestion extends AppCompatActivity implements View.OnClickLi
             String sqlAnsId = "SELECT answerID FROM tblQuestions WHERE tblQuestions.id='" + questionIDtoEdit + "'";
             Cursor c3 = db.rawQuery(sqlAnsId, null);
             if(c3 != null && c3.moveToFirst()) {
-                do {
-                    ansID = c3.getInt(0);
-                    String inSqlAnswersEdit = "UPDATE tblAnswers " +
-                            "SET answers1='" + answer1.getText().toString() + "'," +
-                            "answers2='" + answer2.getText().toString() + "'," +
-                            "answers3='" + answer3.getText().toString() + "'," +
-                            "answers4='" + answer4.getText().toString() + "' " +
-                            "WHERE tblAnswers.id='" + ansID + "'";
-                    //Updating Answers into DB
-                    db.execSQL(inSqlAnswersEdit);
-                } while(c3.moveToNext());
+                ansID = c3.getInt(0);
+                String inSqlAnswersEdit = "UPDATE tblAnswers " +
+                        "SET answers1='" + answer1.getText().toString() + "'," +
+                        "answers2='" + answer2.getText().toString() + "'," +
+                        "answers3='" + answer3.getText().toString() + "'," +
+                        "answers4='" + answer4.getText().toString() + "' " +
+                        "WHERE tblAnswers.id='" + ansID + "'";
+                //Updating Answers into DB
+                db.execSQL(inSqlAnswersEdit);
+            } else {
+                System.out.println("########## ERROR BEFORE UPDATING (ANSWERID)");
             }
             //Updating Question into DB
             String inSqlQuestionEdit = "UPDATE tblQuestions " +
                     "SET difficultyID='" + difID + "'," +
                     "text='" + question.getText().toString() + "'," +
                     "answerID='" + ansID + "'," +
-                    "rightAnswer='" + correctAnswer.getSelectedItem().toString() + "'," +
+            "rightAnswer='" + correctAnswer.getSelectedItem().toString() + "'," +
                     "reward='" + reward.getText().toString() + "' " +
                     "WHERE tblQuestions.id='" + questionIDtoEdit + "'";
             db.execSQL(inSqlQuestionEdit);
@@ -176,5 +188,46 @@ public class AddEditQuestion extends AppCompatActivity implements View.OnClickLi
 
         dbHelper.close();
         db.close();
+    }
+
+    private void edit() {
+        QdDbHelper dbHelper = new QdDbHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        int difID = -1;
+        //Getting Difficulty ID
+        String getDifIDsql = "SELECT * FROM tblDifficulties WHERE tblDifficulties.name='" + difficulty.getSelectedItem().toString() + "'";
+        Cursor c = db.rawQuery(getDifIDsql, null);
+        if(c != null && c.moveToFirst()) {
+            do {
+                difID = c.getInt(0);
+            } while(c.moveToNext());
+        }
+        int ansID = -1;
+        //Getting Answer ID in Question
+        String sqlAnsId = "SELECT answerID FROM tblQuestions WHERE tblQuestions.id='" + questionIDtoEdit + "'";
+        Cursor c3 = db.rawQuery(sqlAnsId, null);
+        if(c3 != null && c3.moveToFirst()) {
+            do {
+                ansID = c3.getInt(0);
+                String inSqlAnswersEdit = "UPDATE tblAnswers " +
+                        "SET answers1='" + answer1.getText().toString() + "'," +
+                        "answers2='" + answer2.getText().toString() + "'," +
+                        "answers3='" + answer3.getText().toString() + "'," +
+                        "answers4='" + answer4.getText().toString() + "' " +
+                        "WHERE tblAnswers.id='" + ansID + "'";
+                //Updating Answers into DB
+                db.execSQL(inSqlAnswersEdit);
+            } while(c3.moveToNext());
+        }
+        //Updating Question into DB
+        String inSqlQuestionEdit = "UPDATE tblQuestions " +
+                "SET difficultyID='" + difID + "'," +
+                "text='" + question.getText().toString() + "'," +
+                "answerID='" + ansID + "'," +
+                "rightAnswer='" + correctAnswer.getSelectedItem().toString() + "'," +
+                "reward='" + reward.getText().toString() + "' " +
+                "WHERE tblQuestions.id='" + questionIDtoEdit + "'";
+        db.execSQL(inSqlQuestionEdit);
     }
 }

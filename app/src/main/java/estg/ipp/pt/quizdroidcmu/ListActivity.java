@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -139,10 +140,8 @@ public class ListActivity extends android.app.ListActivity implements View.OnCli
                     sql = "SELECT * FROM tblDifficulties WHERE tblDifficulties.id='" + c.getInt(1) + "'";
                     Cursor c2 = db.rawQuery(sql, null);
                     if(c2 != null && c2.moveToFirst()) {
-
                         Difficulty dif = new Difficulty(c2.getInt(0), c2.getString(1), c2.getString(2));
                         qList.add(new Question(c.getInt(0), c.getString(3), dif, answers, c.getInt(4), c.getInt(5)));
-
                     }
                 } else if (toList.equals("difficulties")) {
                     Difficulty dif = new Difficulty(c.getInt(0), c.getString(1), c.getString(2));
