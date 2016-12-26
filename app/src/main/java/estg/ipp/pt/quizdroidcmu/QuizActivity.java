@@ -59,34 +59,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         btn_Help4 = (Button) findViewById(R.id.btnHelp4);
         btn_Help4.setOnClickListener(this);
 
-        //do{
-            showDialog();
-        //}while (gameTable.getPlayerName() == "");
-
-        initData();
-        nextQuestion();
-        setGameTable();
-
-    }
-
-    private void initData(){
-        mQuiz.clear();
-
-        QdDbHelper dbHelper = new QdDbHelper(this);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String sql = "SELECT * FROM tblQuestions LEFT JOIN tblAnswers ON tblQuestions.answerID = tblAnswers.id WHERE tblQuestions.difficultyID = '" + (difficulty.getId())  + "'";
-        Cursor c = db.rawQuery(sql,null);
-        if (c != null && c.moveToFirst()){
-            do {
-                String[] answers = {c.getString(7),c.getString(8),c.getString(9),c.getString(10)};
-                mQuiz.add(new Question(c.getInt(0),c.getString(3),difficulty, answers, c.getInt(4), c.getInt(5)));
-            }while (c.moveToNext());
-        }
-        dbHelper.close();
-        db.close();
-    }
-
-    private void showDialog(){
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
         final String txt = "Player Name:";
@@ -101,6 +73,28 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         alert.show();
+
+        initData();
+        nextQuestion();
+        setGameTable();
+
+    }
+
+    private void initData(){
+        mQuiz.clear();
+
+        QdDbHelper dbHelper = new QdDbHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String sql = "SELECT * FROM tblQuestions LEFT JOIN tblAnswers ON tblQuestions.answerID = tblAnswers.id WHERE tblQuestions.difficultyID = '" + (difficulty.getId() - 1)  + "'";
+        Cursor c = db.rawQuery(sql,null);
+        if (c != null && c.moveToFirst()){
+            do {
+                String[] answers = {c.getString(7),c.getString(8),c.getString(9),c.getString(10)};
+                mQuiz.add(new Question(c.getInt(0),c.getString(3),difficulty, answers, c.getInt(4), c.getInt(5)));
+            }while (c.moveToNext());
+        }
+        dbHelper.close();
+        db.close();
     }
 
     private void nextQuestion(){
@@ -126,6 +120,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             newIntent.putExtra("ScoreCorrectAnswers", gameTable.getCorrectAnswers());
             newIntent.putExtra("Score", gameTable.getScore());
             startActivity(newIntent);
+            finish();
         }
     }
 
