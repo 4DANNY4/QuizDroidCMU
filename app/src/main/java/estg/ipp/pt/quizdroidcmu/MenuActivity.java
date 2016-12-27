@@ -16,16 +16,11 @@ import layout.QuizFragment;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private ArrayList<Difficulty> mDifficulty = new ArrayList<>();
-    private ArrayList<Highscore> mScores = new ArrayList<>();
-    private ArrayList<Highscore> mCorrectAnswers = new ArrayList<>();
+    private ArrayList<Difficulty> difList = new ArrayList<>();
 
     private Button btn_StartGame, btn_NextDifficulty, btn_PreviousDifficulty, btn_Settings;
     private TextView txt_highestScore, txt_answerStreak;
     private Difficulty difficulty;
-
-    private SharedPreferences mSettings;
-    private String preference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +52,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initData(){
-        mDifficulty.clear();
+        difList.clear();
 
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -66,25 +61,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         Cursor c = db.rawQuery(sql,null);
         if (c != null && c.moveToFirst()){
             do {
-                mDifficulty.add(new Difficulty(c.getInt(0),c.getString(1),c.getString(2)));
+                difList.add(new Difficulty(c.getInt(0),c.getString(1),c.getString(2)));
             }while (c.moveToNext());
-        }
-
-        for (Difficulty difi : mDifficulty){
-            sql = "SELECT *, MAX(score) As score FROM tblHighscores WHERE tblHighscores.difficultyID = " + difi.getId();
-            c = db.rawQuery(sql,null);
-            if (c != null && c.moveToFirst()){
-                do {
-                    mScores.add(new Highscore(c.getInt(0),c.getString(1),difi,c.getInt(3),c.getInt(4)));
-                }while (c.moveToNext());
-            }
-            sql = "SELECT *, MAX(correctAnswers) As score FROM tblHighscores WHERE tblHighscores.difficultyID = " + difi.getId();
-            c = db.rawQuery(sql,null);
-            if (c != null && c.moveToFirst()){
-                do {
-                    mCorrectAnswers.add(new Highscore(c.getInt(0),c.getString(1),difi,c.getInt(3),c.getInt(4)));
-                }while (c.moveToNext());
-            }
         }
 
         dbHelper.close();
@@ -92,69 +70,70 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setdefault(){
-        difficulty = mDifficulty.get(0);
+        difficulty = difList.get(0);
         btn_StartGame.setText(difficulty.getName());
-        for (Highscore h : mScores){
-            if(h.getDifficulty().getId() == difficulty.getId()){
-                txt_highestScore.setText("" + h.getScore());
-                break;
-            }
-        }
-        for (Highscore h : mCorrectAnswers){
-            if(h.getDifficulty().getId() == difficulty.getId()){
-                txt_answerStreak.setText("" + h.getCorrectAnswers());
-                break;
-            }
-        }
+        getHighscores();
     }
 
     @Override
     public void onClick(View view) {
+        int dPos = -1;
+        // Getting difficulty position
+        for(int i=0; i<difList.size(); i++) {
+            if(difList.get(i).getId() == difficulty.getId()) {
+                dPos = i;
+                break;
+            }
+        }
         if (view.getId() == R.id.btnNextDifficulty){
-            if(difficulty.getId() == mDifficulty.size()){
-                difficulty = mDifficulty.get(0);
+            if(dPos == difList.size()-1){
+                difficulty = difList.get(0);
                 btn_StartGame.setText(difficulty.getName());
-            }else {
-                difficulty = mDifficulty.get(difficulty.getId());
+            } else {
+                difficulty = difList.get(dPos+1);
                 btn_StartGame.setText(difficulty.getName());
             }
+            getHighscores();
         }else if(view.getId() == R.id.btnPreviousDifficulty){
-            if(difficulty.getId() == 1){
-                difficulty = mDifficulty.get(mDifficulty.size() - 1);
+            if(dPos == 0){
+                difficulty = difList.get(difList.size() - 1);
                 btn_StartGame.setText(difficulty.getName());
             }else {
-                difficulty = mDifficulty.get(difficulty.getId() - 2);
+                difficulty = difList.get(dPos-1);
                 btn_StartGame.setText(difficulty.getName());
             }
-        }else if(view.getId() == R.id.btnSettings){
+            getHighscores();
+        } else if(view.getId() == R.id.btnSettings) {
             Intent newIntent = new Intent(this, PreferencesActivityHoneycomb.class);
             startActivity(newIntent);
-        }else if(view.getId() == R.id.btnStartGame){
+        } else if(view.getId() == R.id.btnStartGame) {
             Intent newIntent = new Intent(this, QuizActivity.class);
             newIntent.putExtra("DifficultyID", difficulty.getId());
             newIntent.putExtra("DifficultyName", difficulty.getName());
             newIntent.putExtra("DifficultyDescription", difficulty.getDescription());
             startActivity(newIntent);
+        }
+    }
 
+    private void getHighscores() {
+        QdDbHelper dbHelper = new QdDbHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        //Get highscore for difficulty
+        String sqlGetHighscore = "SELECT MAX(score) AS score FROM tblHighscores WHERE tblHighscores.difficultyID='" + difficulty.getId() + "'";
+        Cursor c = db.rawQuery(sqlGetHighscore, null);
+        if(c != null && c.moveToFirst()) {
+            txt_highestScore.setText("" + c.getInt(0));
         }
 
-        for (Highscore h : mScores){
-            if(h.getDifficulty().getId() == difficulty.getId()){
-                txt_highestScore.setText("" + h.getScore());
-                break;
-            } else {
-                txt_highestScore.setText("" + 0);
-                break;
-            }
+        //Get most correct answers for difficulty
+        String sqlGetCorrectAnswer = "SELECT MAX(correctAnswers) AS correctAnswers FROM tblHighscores WHERE tblHighscores.difficultyID='" + difficulty.getId() + "'";
+        Cursor c2 = db.rawQuery(sqlGetCorrectAnswer, null);
+        if(c2 != null && c2.moveToFirst()) {
+            txt_answerStreak.setText("" + c2.getInt(0));
         }
-        for (Highscore h : mCorrectAnswers){
-            if(h.getDifficulty().getId() == difficulty.getId()){
-                txt_answerStreak.setText("" + h.getCorrectAnswers());
-                break;
-            } else {
-                txt_answerStreak.setText("" + 0);
-                break;
-            }
-        }
+
+        dbHelper.close();
+        db.close();
     }
 }
