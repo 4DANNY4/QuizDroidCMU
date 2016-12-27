@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener{
@@ -59,20 +61,20 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         btn_Help4 = (Button) findViewById(R.id.btnHelp4);
         btn_Help4.setOnClickListener(this);
 
-        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final AlertDialog.Builder playerNameDialog = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
         final String txt = "Player Name:";
-        alert.setCancelable(false);
-        alert.setTitle(txt);
-        alert.setView(input);
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        playerNameDialog.setCancelable(false);
+        playerNameDialog.setTitle(txt);
+        playerNameDialog.setView(input);
+        playerNameDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 gameTable.setPlayerName(input.getText().toString().trim());
                 Toast.makeText(getApplicationContext(), "Player: " + gameTable.getPlayerName(),
                         Toast.LENGTH_SHORT).show();
             }
         });
-        alert.show();
+        playerNameDialog.show();
 
         initData();
         nextQuestion();
@@ -85,7 +87,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String sql = "SELECT * FROM tblQuestions LEFT JOIN tblAnswers ON tblQuestions.answerID = tblAnswers.id WHERE tblQuestions.difficultyID = '" + (difficulty.getId() - 1)  + "'";
+        String sql = "SELECT * FROM tblQuestions LEFT JOIN tblAnswers ON tblQuestions.answerID = tblAnswers.id WHERE tblQuestions.difficultyID = '" + difficulty.getId()  + "'";
         Cursor c = db.rawQuery(sql,null);
         if (c != null && c.moveToFirst()){
             do {
@@ -166,29 +168,29 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         Random r = new Random();
         do{
             int rand = r.nextInt(max - min + 1) + min;
-            if (rand != (randQuestion.getCorrectAnswer() + 1)){
+            if (rand != (randQuestion.getCorrectAnswer())){
                 switch (rand){
                     case 1:
                         if(btn_Answer1.getVisibility() == View.VISIBLE){
-                            btn_Answer1.setVisibility(View.GONE);
+                            btn_Answer1.setVisibility(View.INVISIBLE);
                             help++;
                         }
                         break;
                     case 2:
                         if(btn_Answer2.getVisibility() == View.VISIBLE) {
-                            btn_Answer2.setVisibility(View.GONE);
+                            btn_Answer2.setVisibility(View.INVISIBLE);
                             help++;
                         }
                         break;
                     case 3:
                         if(btn_Answer3.getVisibility() == View.VISIBLE) {
-                            btn_Answer3.setVisibility(View.GONE);
+                            btn_Answer3.setVisibility(View.INVISIBLE);
                             help++;
                         }
                         break;
                     case 4:
                         if(btn_Answer4.getVisibility() == View.VISIBLE) {
-                            btn_Answer4.setVisibility(View.GONE);
+                            btn_Answer4.setVisibility(View.INVISIBLE);
                             help++;
                         }
                         break;
@@ -198,6 +200,139 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             }
         }while (help < 2);
         btn_Help1.setEnabled(false);
+    }
+
+    private int randAnswer(){
+        int min = 1;
+        int max = 4;
+
+        Random r = new Random();
+        do{
+            int rand = r.nextInt(max - min + 1) + min;
+            if (rand != (randQuestion.getCorrectAnswer())){
+                return rand - 1;
+            }
+        }while(true);
+    }
+
+    private void contacts(String contact){
+        int min = 1;
+        int max = 100;
+
+        Random r = new Random();
+        int rand = r.nextInt(max - min + 1) + min;
+
+        switch (contact){
+            case "Albert Einstein":
+                Toast.makeText(getApplicationContext(),
+                        "I think it is: " + randQuestion.getAnswers()[randQuestion.getCorrectAnswer() - 1].toString(),
+                        Toast.LENGTH_LONG).show();
+                break;
+            case "Doge":
+                if(rand <= 40 || rand >= 60){
+                    Toast.makeText(getApplicationContext(),
+                            "I think it is: " + randQuestion.getAnswers()[randQuestion.getCorrectAnswer() - 1].toString(),
+                            Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(getApplicationContext(),
+                            "I think it is: " + randQuestion.getAnswers()[randAnswer()].toString(),
+                            Toast.LENGTH_LONG).show();
+                }
+                break;
+            case "Harambe":
+                if(rand <= 35 || rand >= 80){
+                    Toast.makeText(getApplicationContext(),
+                            "I think it is: " + randQuestion.getAnswers()[randQuestion.getCorrectAnswer() - 1].toString(),
+                            Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(getApplicationContext(),
+                            "I think it is: " + randQuestion.getAnswers()[randAnswer()].toString(),
+                            Toast.LENGTH_LONG).show();
+                }
+                break;
+            case "Donald Trump":
+                if(rand <= 10 || rand >= 90){
+                    Toast.makeText(getApplicationContext(),
+                            "I think it is: " + randQuestion.getAnswers()[randQuestion.getCorrectAnswer() - 1].toString(),
+                            Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(getApplicationContext(),
+                            "I think it is: " + randQuestion.getAnswers()[randAnswer()].toString(),
+                            Toast.LENGTH_LONG).show();
+                }
+                break;
+            case "SID":
+                if(rand == 99){
+                    Toast.makeText(getApplicationContext(),
+                            "I think it is: " + randQuestion.getAnswers()[randQuestion.getCorrectAnswer() - 1].toString(),
+                            Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getApplicationContext(),
+                            "I think it is: " + randQuestion.getAnswers()[randAnswer()].toString(),
+                            Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void helpPhone(){
+        final AlertDialog.Builder helpPhone = new AlertDialog.Builder(this);
+        final String txt = "Who would you like to contact:";
+        final ArrayList<String> contacts = new ArrayList<>();
+        contacts.add("Albert Einstein"); // 100%
+        contacts.add("Doge"); // 80%
+        contacts.add("Harambe"); //55%
+        contacts.add("Donald Trump"); // 20%
+        contacts.add("SID"); // 1%
+        Collections.shuffle(contacts);
+
+        helpPhone.setCancelable(false);
+        helpPhone.setTitle(txt);
+        helpPhone.setPositiveButton(contacts.get(0).toString(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                contacts(contacts.get(0).toString());
+            }
+        });
+        helpPhone.setNeutralButton(contacts.get(1).toString(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                contacts(contacts.get(1).toString());
+            }
+        });
+        helpPhone.setNegativeButton(contacts.get(2).toString(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                contacts(contacts.get(2).toString());
+            }
+        });
+        helpPhone.show();
+        btn_Help2.setEnabled(false);
+    }
+
+    private void helpPublic(){
+        final AlertDialog.Builder helpPublic = new AlertDialog.Builder(this);
+        String answer = "Answer 1: \n" +
+                "Answer 2: \n" +
+                "Answer 3: \n" +
+                "Answer 4: ";
+
+        int min = 1;
+        int max = 100;
+        Random r = new Random();
+        int rand = r.nextInt(max - min + 1) + min;
+
+        rand = 50;
+
+        if(rand <= 5 || rand >= 95){
+
+        }else{
+
+        }
+        helpPublic.setTitle(answer);
+        helpPublic.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) { }
+        });
+        helpPublic.show();
     }
 
     @Override
@@ -213,11 +348,12 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         } else if(view.getId() == R.id.btnHelp1){
             helpFiftyFifty();
         } else if(view.getId() == R.id.btnHelp2){
-
+            helpPhone();
         } else if(view.getId() == R.id.btnHelp3){
-
+            helpPublic();
         } else if(view.getId() == R.id.btnHelp4){
-
+            nextQuestion();
+            btn_Help4.setEnabled(false);
         }
     }
 }

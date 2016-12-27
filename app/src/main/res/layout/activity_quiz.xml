@@ -9,54 +9,75 @@
         android:id="@+id/txtQuestion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Prgunta"/>
+        android:text="Prgunta"
+        android:gravity="center"
+        android:layout_marginTop="50dp"/>
 
-    <Button
-        android:id="@+id/btnAnswer1"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Answer1"/>
+        android:layout_margin="10dp"
+        android:gravity="center">
+        <Button
+            android:id="@+id/btnHelp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50/50"/>
+        <Button
+            android:id="@+id/btnHelp2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone"/>
+        <Button
+            android:id="@+id/btnHelp3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Help3"/>
+        <Button
+            android:id="@+id/btnHelp4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change"/>
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/btnAnswer2"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Answer2"/>
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnAnswer1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Answer1"
+            android:layout_weight="1"
+            android:layout_margin="10dp"/>
+        <Button
+            android:id="@+id/btnAnswer2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Answer2"
+            android:layout_weight="1"
+            android:layout_margin="10dp"/>
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/btnAnswer3"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Answer3"/>
-
-    <Button
-        android:id="@+id/btnAnswer4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Answer4"/>
-
-    <Button
-        android:id="@+id/btnHelp1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Help1 : 50/50"/>
-
-    <Button
-        android:id="@+id/btnHelp2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Help2"/>
-
-    <Button
-        android:id="@+id/btnHelp3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Help3"/>
-
-    <Button
-        android:id="@+id/btnHelp4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Help4"/>
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnAnswer3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Answer3"
+            android:layout_weight="1"
+            android:layout_margin="10dp"/>
+        <Button
+            android:id="@+id/btnAnswer4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Answer4"
+            android:layout_weight="1"
+            android:layout_margin="10dp"/>
+    </LinearLayout>
 
 </LinearLayout>
