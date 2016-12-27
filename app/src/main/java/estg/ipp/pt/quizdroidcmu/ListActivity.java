@@ -60,47 +60,6 @@ public class ListActivity extends android.app.ListActivity implements View.OnCli
             btnGotoAddCategory.setVisibility(View.VISIBLE);
             txt_title.setText("Categories");
         }
-        /**this.getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(ListActivity.this);
-                alert.setTitle("Actions: ");
-                alert.setNeutralButton("Edit", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent newIntent = new Intent(getApplicationContext(), AddEditQuestion.class);
-                        newIntent.putExtra("Action", "Edit");
-                        startActivity(newIntent);
-                        dialog.dismiss();
-                    }
-                });
-                alert.setNeutralButton("Remove", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        AlertDialog.Builder alert = new AlertDialog.Builder(ListActivity.this);
-                        alert.setTitle("Removing: ");
-                        alert.setMessage("Are you sure?");
-                        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                //TODO: REMOVE
-                                dialog.dismiss();
-                            }
-                        });
-                        //TODO: REMOVE
-                        dialog.dismiss();
-                    }
-                });
-                alert.show();
-                return true;
-            }
-        });*/
     }
 
     public void onResume() {
@@ -163,6 +122,7 @@ public class ListActivity extends android.app.ListActivity implements View.OnCli
             startActivity(newIntent);
         } else if(v.getId() == R.id.btnGotoAddDifficulty) {
             Intent newIntent = new Intent(this, AddEditDifficulty.class);
+            newIntent.putExtra("Action", "Add");
             startActivity(newIntent);
         } else if(v.getId() == R.id.btnGotoAddCategory) {
             Intent newIntent = new Intent(this, AddEditQuestion.class); //Category
@@ -180,27 +140,84 @@ public class ListActivity extends android.app.ListActivity implements View.OnCli
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int pos = info.position;
         switch (item.getItemId()) {
             case R.id.edit_item:
-                Intent newIntent = new Intent(getBaseContext(), AddEditQuestion.class);
-                newIntent.putExtra("Action", "Edit");
-                int pos = info.position;
-                newIntent.putExtra("ID", qList.get(pos).getId());
-                newIntent.putExtra("DIFFID", qList.get(pos).getDifficulty().getId());
-                newIntent.putExtra("QUESTION", qList.get(pos).getText());
-                newIntent.putExtra("ANSWER1", qList.get(pos).getAnswers()[0]);
-                newIntent.putExtra("ANSWER2", qList.get(pos).getAnswers()[1]);
-                newIntent.putExtra("ANSWER3", qList.get(pos).getAnswers()[2]);
-                newIntent.putExtra("ANSWER4", qList.get(pos).getAnswers()[3]);
-                newIntent.putExtra("CORRECTANSWER", qList.get(pos).getCorrectAnswer());
-                newIntent.putExtra("REWARD", qList.get(pos).getReward());
-                startActivity(newIntent);
+                if(toList.equals("questions")) {
+                    Intent newIntent = new Intent(getBaseContext(), AddEditQuestion.class);
+                    newIntent.putExtra("Action", "Edit");
+                    newIntent.putExtra("ID", qList.get(pos).getId());
+                    newIntent.putExtra("DIFFID", qList.get(pos).getDifficulty().getId());
+                    newIntent.putExtra("QUESTION", qList.get(pos).getText());
+                    newIntent.putExtra("ANSWER1", qList.get(pos).getAnswers()[0]);
+                    newIntent.putExtra("ANSWER2", qList.get(pos).getAnswers()[1]);
+                    newIntent.putExtra("ANSWER3", qList.get(pos).getAnswers()[2]);
+                    newIntent.putExtra("ANSWER4", qList.get(pos).getAnswers()[3]);
+                    newIntent.putExtra("CORRECTANSWER", qList.get(pos).getCorrectAnswer());
+                    newIntent.putExtra("REWARD", qList.get(pos).getReward());
+                    startActivity(newIntent);
+                } else if(toList.equals("difficulties")) {
+                    Intent newIntent = new Intent(getBaseContext(), AddEditDifficulty.class);
+                    newIntent.putExtra("Action", "Edit");
+                    newIntent.putExtra("ID", dList.get(pos).getId());
+                    newIntent.putExtra("NAME", dList.get(pos).getName());
+                    newIntent.putExtra("DESCRIPTION", dList.get(pos).getDescription());
+                    startActivity(newIntent);
+                } else if(toList.equals("categories")) {
+
+                }
                 return true;
             case R.id.remove_item:
-                //deleteNote(info.id);
+                if(toList.equals("questions")) {
+                    int qID = qList.get(pos).getId();
+                    removeItem(qID, pos);
+                } else if(toList.equals("difficulties")) {
+                    int dID = dList.get(pos).getId();
+                    removeItem(dID, pos);
+                } else if(toList.equals("categories")) {
+
+                }
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void removeItem(int id, int pos) {
+        QdDbHelper dbHelper = new QdDbHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        if(toList.equals("questions")) { //Remove for Questions
+            String sqlRemoveQuestion = "DELETE FROM tblQuestions " +
+                    "WHERE tblQuestions.id='" + id + "'";
+            String sqlRemoveAnswersFromQuestion = "DELETE FROM tblAnswers " +
+                    "WHERE tblAnswers.id='" + id + "'";
+            db.execSQL(sqlRemoveAnswersFromQuestion);
+            db.execSQL(sqlRemoveQuestion);
+            qList.remove(pos);
+            qAdapter.notifyDataSetChanged();
+        } else if(toList.equals("difficulties")) { //Remove for Difficulties
+            String sqlVerifyQuestions = "SELECT COUNT(*) FROM tblQuestions WHERE tblQuestions.difficultyID='" + id + "'";
+            Cursor c = db.rawQuery(sqlVerifyQuestions, null);
+            if(c != null && c.moveToFirst()) {
+                if(c.getInt(0) == 0) { //Check if theres any question with this Difficulty
+                    String sqlRemoveDifficulty = "DELETE FROM tblDifficulties " +
+                            "WHERE tblDifficulties.id = '" + id + "'";
+                    db.execSQL(sqlRemoveDifficulty);
+                    dList.remove(pos);
+                    dAdapter.notifyDataSetChanged();
+                    Toast.makeText(this, "Removed!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Can't Remove: Questions have this Difficulty.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else if(toList.equals("categories")) { //Remove for categories
+            //verificar se existem perguntas com esta categoria
+            //apagar se nao houver
+            //se houver nao apagar
+        }
+
+        dbHelper.close();
+        db.close();
     }
 }

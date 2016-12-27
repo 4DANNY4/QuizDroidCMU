@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="10dp">
+
+    <TextView
+        android:id="@+id/tv_dmanTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Difficulty"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        android:textAllCaps="true" />
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:text="Name: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/txt_dname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|start"
+            android:textSize="14sp"
+            android:lines="3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:text="Description: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/txt_ddesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|start"
+            android:textSize="14sp"
+            android:lines="3" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnAddDifficulty"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Add"
+        android:textSize="30sp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/btnEditDifficulty"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Edit"
+        android:textSize="30sp"
+        android:visibility="gone"/>
+
+
+</LinearLayout>

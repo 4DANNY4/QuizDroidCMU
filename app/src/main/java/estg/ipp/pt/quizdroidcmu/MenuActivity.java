@@ -32,8 +32,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        initData();
-
         btn_NextDifficulty = (Button) findViewById(R.id.btnNextDifficulty);
         btn_NextDifficulty.setOnClickListener(this);
 
@@ -49,8 +47,13 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         txt_highestScore = (TextView) findViewById(R.id.txtHighestScore);
         txt_answerStreak = (TextView) findViewById(R.id.txtAnswerStreak);
 
-        setdefault();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
+        setdefault();
     }
 
     private void initData(){
@@ -136,14 +139,20 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         for (Highscore h : mScores){
-            if(h.getId() == difficulty.getId()){
+            if(h.getDifficulty().getId() == difficulty.getId()){
                 txt_highestScore.setText("" + h.getScore());
+                break;
+            } else {
+                txt_highestScore.setText("" + 0);
                 break;
             }
         }
         for (Highscore h : mCorrectAnswers){
-            if(h.getId() == difficulty.getId()){
+            if(h.getDifficulty().getId() == difficulty.getId()){
                 txt_answerStreak.setText("" + h.getCorrectAnswers());
+                break;
+            } else {
+                txt_answerStreak.setText("" + 0);
                 break;
             }
         }

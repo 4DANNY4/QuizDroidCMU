@@ -43,7 +43,7 @@ public class AddEditQuestion extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_question);
 
-        title = (TextView) findViewById(R.id.tv_manTitle);
+        title = (TextView) findViewById(R.id.tv_qmanTitle);
         question = (EditText) findViewById(R.id.txt_question);
         difficulty = (Spinner) findViewById(R.id.spin_difficulty);
         answer1 = (EditText) findViewById(R.id.txt_answer1);
@@ -53,9 +53,9 @@ public class AddEditQuestion extends AppCompatActivity implements View.OnClickLi
         correctAnswer = (Spinner) findViewById(R.id.spin_correctAnswer);
         reward = (EditText) findViewById(R.id.txt_reward);
 
-        btnAdd = (Button) findViewById(R.id.btnAdd);
+        btnAdd = (Button) findViewById(R.id.btnAddQuestion);
         btnAdd.setOnClickListener(this);
-        btnEdit = (Button) findViewById(R.id.btnEdit);
+        btnEdit = (Button) findViewById(R.id.btnEditQuestion);
         btnEdit.setOnClickListener(this);
 
         dAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, dList);
@@ -111,13 +111,12 @@ public class AddEditQuestion extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.btnAdd) {
+        if(v.getId() == R.id.btnAddQuestion) {
             add();
-            Toast doneToast = Toast.makeText(this, "Added!", Toast.LENGTH_SHORT);
-            doneToast.show();
+            Toast.makeText(this, "Added!", Toast.LENGTH_SHORT).show();
             finish();
-        } else if(v.getId() == R.id.btnEdit) {
-            add();
+        } else if(v.getId() == R.id.btnEditQuestion) {
+            edit();
             Toast doneToast = Toast.makeText(this, "Updated!", Toast.LENGTH_SHORT);
             doneToast.show();
             finish();
@@ -137,54 +136,25 @@ public class AddEditQuestion extends AppCompatActivity implements View.OnClickLi
         } else {
             System.out.println("########ERROR: difficulty id error");
         }
-        if(action.equals("Add")) { //TO ADD
-            String inSqlAnswers = "INSERT INTO tblAnswers(answers1, answers2, answers3, answers4)" +
-                    " VALUES('"+answer1.getText().toString()+"','"+answer2.getText().toString()+"','"+
-                    answer3.getText().toString()+"','"+answer4.getText().toString()+"')";
-            //Inserting Answers into DB
-            db.execSQL(inSqlAnswers);
-            //Getting Last ID inserted in Answers
-            String getAnswerIDsql = "SELECT MAX(id) FROM tblAnswers";
-            int ansId = -1;
-            Cursor c2 = db.rawQuery(getAnswerIDsql, null);
-            if(c2 != null && c2.moveToFirst()) {
-                ansId = c2.getInt(0);
-            } else {
-                System.out.println("###########ERROR: ANSWER ID ERROR!");
-            }
-            String inSqlquestion = "INSERT INTO tblQuestions(difficultyID, text, answerID, rightAnswer, reward)" +
-                    " VALUES('"+difID+"','"+question.getText().toString()+"','"+ansId+"','"+
-                    correctAnswer.getSelectedItem().toString()+"','"+reward.getText().toString()+"')";
-            //Inserting Question into DB
-            db.execSQL(inSqlquestion);
-        } else if(action.equals("Edit")) { //TO EDIT
-            int ansID = -1;
-            //Getting Answer ID in Question
-            String sqlAnsId = "SELECT answerID FROM tblQuestions WHERE tblQuestions.id='" + questionIDtoEdit + "'";
-            Cursor c3 = db.rawQuery(sqlAnsId, null);
-            if(c3 != null && c3.moveToFirst()) {
-                ansID = c3.getInt(0);
-                String inSqlAnswersEdit = "UPDATE tblAnswers " +
-                        "SET answers1='" + answer1.getText().toString() + "'," +
-                        "answers2='" + answer2.getText().toString() + "'," +
-                        "answers3='" + answer3.getText().toString() + "'," +
-                        "answers4='" + answer4.getText().toString() + "' " +
-                        "WHERE tblAnswers.id='" + ansID + "'";
-                //Updating Answers into DB
-                db.execSQL(inSqlAnswersEdit);
-            } else {
-                System.out.println("########## ERROR BEFORE UPDATING (ANSWERID)");
-            }
-            //Updating Question into DB
-            String inSqlQuestionEdit = "UPDATE tblQuestions " +
-                    "SET difficultyID='" + difID + "'," +
-                    "text='" + question.getText().toString() + "'," +
-                    "answerID='" + ansID + "'," +
-            "rightAnswer='" + correctAnswer.getSelectedItem().toString() + "'," +
-                    "reward='" + reward.getText().toString() + "' " +
-                    "WHERE tblQuestions.id='" + questionIDtoEdit + "'";
-            db.execSQL(inSqlQuestionEdit);
+        String inSqlAnswers = "INSERT INTO tblAnswers(answers1, answers2, answers3, answers4)" +
+                " VALUES('"+answer1.getText().toString()+"','"+answer2.getText().toString()+"','"+
+                answer3.getText().toString()+"','"+answer4.getText().toString()+"')";
+        //Inserting Answers into DB
+        db.execSQL(inSqlAnswers);
+        //Getting Last ID inserted in Answers
+        String getAnswerIDsql = "SELECT MAX(id) FROM tblAnswers";
+        int ansId = -1;
+        Cursor c2 = db.rawQuery(getAnswerIDsql, null);
+        if(c2 != null && c2.moveToFirst()) {
+            ansId = c2.getInt(0);
+        } else {
+            System.out.println("###########ERROR: ANSWER ID ERROR!");
         }
+        String inSqlquestion = "INSERT INTO tblQuestions(difficultyID, text, answerID, rightAnswer, reward)" +
+                " VALUES('"+difID+"','"+question.getText().toString()+"','"+ansId+"','"+
+                correctAnswer.getSelectedItem().toString()+"','"+reward.getText().toString()+"')";
+        //Inserting Question into DB
+        db.execSQL(inSqlquestion);
 
         dbHelper.close();
         db.close();
