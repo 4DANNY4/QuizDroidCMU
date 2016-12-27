@@ -12,7 +12,7 @@
     tools:context="estg.ipp.pt.quizdroidcmu.AddEditQuestion">
 
     <TextView
-        android:id="@+id/tv_manTitle"
+        android:id="@+id/tv_qmanTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add Question"
@@ -194,7 +194,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnAdd"
+        android:id="@+id/btnAddQuestion"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="Add"
@@ -202,7 +202,7 @@
         android:visibility="gone"/>
 
     <Button
-        android:id="@+id/btnEdit"
+        android:id="@+id/btnEditQuestion"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="Edit"
