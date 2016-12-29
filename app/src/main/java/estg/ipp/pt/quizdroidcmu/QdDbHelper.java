@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QdDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "QuizDroid.db";
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
 
     public QdDbHelper(Context context) { super(context, DATABASE_NAME, null, DATABASE_VERSION); }
 
@@ -82,7 +82,11 @@ public class QdDbHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score)" +
                 " VALUES('GameMedium','2','15','1623')");
         db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score)" +
-                " VALUES('GameHard','3','2','30')");
+                " VALUES('GameHard','3','1','30')");
+        db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score)" +
+                " VALUES('GameHard2','3','6','400')");
+        db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score)" +
+                " VALUES('GameHard3','3','3','160')");
     }
 
     @Override
