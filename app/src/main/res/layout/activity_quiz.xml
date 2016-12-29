@@ -3,81 +3,99 @@
     android:id="@+id/activity_quiz"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primaryColor"
     android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/txtQuestion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Prgunta"
-        android:gravity="center"
-        android:layout_marginTop="50dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="15dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/txtQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:layout_margin="15dp"
+        android:orientation="horizontal"
         android:gravity="center">
         <Button
             android:id="@+id/btnHelp1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="50/50"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_50"/>
         <Button
             android:id="@+id/btnHelp2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Phone"/>
+            android:layout_marginStart="20dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_local_phone_black_48dp" />
         <Button
             android:id="@+id/btnHelp3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Help3"/>
+            android:layout_marginStart="20dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_people_black_48dp" />
         <Button
             android:id="@+id/btnHelp4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Change"/>
+            android:layout_marginStart="20dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_autorenew_black_48dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/btnAnswer1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Answer1"
-            android:layout_weight="1"
-            android:layout_margin="10dp"/>
-        <Button
-            android:id="@+id/btnAnswer2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Answer2"
-            android:layout_weight="1"
-            android:layout_margin="10dp"/>
-    </LinearLayout>
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+        android:layout_weight="2">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/btnAnswer3"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Answer3"
-            android:layout_weight="1"
-            android:layout_margin="10dp"/>
-        <Button
-            android:id="@+id/btnAnswer4"
+            android:padding="20dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnAnswer1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Answer1"
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/btnAnswer2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Answer2"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Answer4"
-            android:layout_weight="1"
-            android:layout_margin="10dp"/>
+            android:padding="20dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnAnswer3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Answer3"
+                android:layout_weight="1" />
+            <Button
+                android:id="@+id/btnAnswer4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Answer4"
+                android:layout_weight="1" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>
