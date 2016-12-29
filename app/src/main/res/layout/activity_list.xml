@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="estg.ipp.pt.quizdroidcmu.ListActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/primaryColor">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/txt_title"
+            android:textColor="@color/textIconsColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="9"
@@ -56,6 +58,7 @@
 
     <TextView
         android:id="@android:id/empty"
+        android:textColor="@color/textIconsColor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="List is empty!"/>

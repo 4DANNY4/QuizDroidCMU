@@ -26,6 +26,14 @@ public class PreferencesFragment extends PreferenceFragment implements Preferenc
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        view.setBackgroundColor(getResources().getColor(R.color.primaryColor));
+
+        return view;
+    }
+
+    @Override
     public boolean onPreferenceClick(Preference preference) {
         Intent newIntent = new Intent(getActivity(), ListActivity.class);
         if(preference.getKey().equals("pref_key_manageQuestion")) {

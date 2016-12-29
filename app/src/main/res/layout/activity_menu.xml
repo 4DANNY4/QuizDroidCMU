@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#42A125">
+    android:background="@color/primaryColor">
 
     <LinearLayout
         android:layout_marginTop="20dp"
@@ -45,14 +45,28 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnSettings"
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <Button
+            android:id="@+id/btnSettings"
 
-        android:layout_marginTop="20dp"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/gearboxshape"/>
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/settings_gear"/>
+
+        <Button
+            android:id="@+id/btnHighscores"
+            android:layout_width="50dp"
+            android:layout_marginStart="30dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_grade_black_48dp" />
+    </LinearLayout>
 
     <TextView
         android:layout_marginTop="50dp"

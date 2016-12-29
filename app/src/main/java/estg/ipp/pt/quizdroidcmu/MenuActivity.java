@@ -18,7 +18,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     private ArrayList<Difficulty> difList = new ArrayList<>();
 
-    private Button btn_StartGame, btn_NextDifficulty, btn_PreviousDifficulty, btn_Settings;
+    private Button btn_StartGame, btn_NextDifficulty, btn_PreviousDifficulty, btn_Settings, btn_Highscores;
     private TextView txt_highestScore, txt_answerStreak;
     private Difficulty difficulty;
 
@@ -38,6 +38,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         btn_Settings = (Button) findViewById(R.id.btnSettings);
         btn_Settings.setOnClickListener(this);
+
+        btn_Highscores = (Button) findViewById(R.id.btnHighscores);
+        btn_Highscores.setOnClickListener(this);
 
         txt_highestScore = (TextView) findViewById(R.id.txtHighestScore);
         txt_answerStreak = (TextView) findViewById(R.id.txtAnswerStreak);
@@ -111,6 +114,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             newIntent.putExtra("DifficultyID", difficulty.getId());
             newIntent.putExtra("DifficultyName", difficulty.getName());
             newIntent.putExtra("DifficultyDescription", difficulty.getDescription());
+            startActivity(newIntent);
+        } else if(view.getId() == R.id.btnHighscores) {
+            Intent newIntent = new Intent(this, HighscoreContainer.class);
             startActivity(newIntent);
         }
     }
