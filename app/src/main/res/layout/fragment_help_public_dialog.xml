@@ -1,0 +1,114 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/txtAnswer1Dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Answer A: "
+        android:textAlignment="textStart"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ProgressBar
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:max="100"
+            android:id="@+id/answer1DialogProgress"
+            android:layout_weight="5"/>
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:id="@+id/txt1DialogProgress"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtAnswer2Dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Answer B: "
+        android:textAlignment="textStart"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ProgressBar
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:max="100"
+            android:id="@+id/answer2DialogProgress"
+            android:layout_weight="5"/>
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:id="@+id/txt2DialogProgress"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/txtAnswer3Dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Answer C: "
+        android:textAlignment="textStart"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ProgressBar
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:max="100"
+            android:id="@+id/answer3DialogProgress"
+            android:layout_weight="5"/>
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:id="@+id/txt3DialogProgress"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtAnswer4Dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Answer D: "
+        android:textAlignment="textStart"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ProgressBar
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:max="100"
+            android:id="@+id/answer4DialogProgress"
+            android:layout_weight="5"/>
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:id="@+id/txt4DialogProgress"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnEndDialog"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OK"/>
+</LinearLayout>

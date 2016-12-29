@@ -12,4 +12,16 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="DialogStyleHelpPhone" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">#FF5722</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <!-- Used for the background -->
+        <item name="android:background">#4CAF50</item>
+
+        <!-- <item name="android:orientation">vertical</item> -->
+        <item name="android:layout_gravity">left</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
 </resources>
