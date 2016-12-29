@@ -1,15 +1,21 @@
 package estg.ipp.pt.quizdroidcmu;
 
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,6 +103,11 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }
         dbHelper.close();
         db.close();
+
+        Collections.shuffle(mQuiz);
+        do {
+            mQuiz.remove(mQuiz.size() - 1);
+        }while (mQuiz.size() > 20);
     }
 
     private void nextQuestion(){
@@ -272,13 +283,35 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                             Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case "Potato":
+                if(rand <= 50 || rand >= 60){
+                    Toast.makeText(getApplicationContext(),
+                            "I think it is: " + randQuestion.getAnswers()[randQuestion.getCorrectAnswer() - 1].toString(),
+                            Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(getApplicationContext(),
+                            "I think it is: " + randQuestion.getAnswers()[randAnswer()].toString(),
+                            Toast.LENGTH_LONG).show();
+                }
+                break;
+            case "Waifu":
+                if(rand <= 50 || rand >= 75){
+                    Toast.makeText(getApplicationContext(),
+                            "I think it is: " + randQuestion.getAnswers()[randQuestion.getCorrectAnswer() - 1].toString(),
+                            Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(getApplicationContext(),
+                            "I think it is: " + randQuestion.getAnswers()[randAnswer()].toString(),
+                            Toast.LENGTH_LONG).show();
+                }
+                break;
             default:
                 break;
         }
     }
 
     private void helpPhone(){
-        final AlertDialog.Builder helpPhone = new AlertDialog.Builder(this);
+        final AlertDialog.Builder helpPhone = new AlertDialog.Builder(this, R.style.DialogStyleHelpPhone);
         final String txt = "Who would you like to contact:";
         final ArrayList<String> contacts = new ArrayList<>();
         contacts.add("Albert Einstein"); // 100%
@@ -286,9 +319,12 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         contacts.add("Harambe"); //55%
         contacts.add("Donald Trump"); // 20%
         contacts.add("SID"); // 1%
+        contacts.add("Potato"); // 90%
+        contacts.add("Waifu"); // 75%
         Collections.shuffle(contacts);
-
+/*
         helpPhone.setCancelable(false);
+
         helpPhone.setTitle(txt);
         helpPhone.setPositiveButton(contacts.get(0).toString(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -305,32 +341,80 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 contacts(contacts.get(2).toString());
             }
         });
+
         helpPhone.show();
+        */
         btn_Help2.setEnabled(false);
+    }
+
+    private void showEditDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        helpPhoneDialog editNameDialog = new helpPhoneDialog();
+        editNameDialog.show(fm, "fragment_help_phone_dialog");
     }
 
     private void helpPublic(){
         final AlertDialog.Builder helpPublic = new AlertDialog.Builder(this);
-        String answer = "Answer 1: \n" +
-                "Answer 2: \n" +
-                "Answer 3: \n" +
-                "Answer 4: ";
+        helpPublic.setCancelable(false);
 
-        int min = 1;
-        int max = 100;
+        String answers[] = {
+                "-> " + randQuestion.getAnswers()[0].toString() + " <-:"
+                , "-> " + randQuestion.getAnswers()[1].toString() + " <-:"
+                , "-> " + randQuestion.getAnswers()[2].toString() + " <-:"
+                , "-> " + randQuestion.getAnswers()[3].toString() + " <-:"
+        };
+
+        int min = 1, max = 100, sum = 0;
         Random r = new Random();
         int rand = r.nextInt(max - min + 1) + min;
 
-        rand = 50;
+        ArrayList<Integer> arrayRand = new ArrayList<>();
+        for (int i = 0; i < 4 - 1; i++)
+        {
+            arrayRand.add(r.nextInt((100 - sum) / 2) + 1);
+            sum += arrayRand.get(i);
+        }
+        arrayRand.add(100 - sum);
+
+        System.out.println(arrayRand.toString());
+        System.out.println(rand);
 
         if(rand <= 5 || rand >= 95){
-
+            int firstTop, secondTop;
+            firstTop = Collections.max(arrayRand);
+            arrayRand.remove(arrayRand.indexOf(firstTop));
+            secondTop = Collections.max(arrayRand);
+            arrayRand.remove(arrayRand.indexOf(secondTop));
+            arrayRand.add(firstTop);
+            Collections.shuffle(arrayRand);
+            for(int i = 0; i < 4; i++){
+                if((randQuestion.getCorrectAnswer()-1)==i){
+                    answers[randQuestion.getCorrectAnswer()-1] += " " + secondTop + "%";
+                } else{
+                    answers[i] += " " + arrayRand.get(0) + "%";
+                    arrayRand.remove(0);
+                }
+            }
         }else{
-
+            int top;
+            top = Collections.max(arrayRand);
+            arrayRand.remove(arrayRand.indexOf(top));
+            Collections.shuffle(arrayRand);
+            for(int i = 0; i < 4; i++){
+                if((randQuestion.getCorrectAnswer()-1)==i){
+                    answers[randQuestion.getCorrectAnswer()-1] += " " + top + "%";
+                } else{
+                   answers[i] += " " + arrayRand.get(0) + "%";
+                    arrayRand.remove(0);
+                }
+            }
         }
-        helpPublic.setTitle(answer);
-        helpPublic.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) { }
+        helpPublic.setTitle("Public Help");
+        helpPublic.setItems(answers, null);
+        helpPublic.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
         });
         helpPublic.show();
     }
