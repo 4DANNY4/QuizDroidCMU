@@ -1,11 +1,11 @@
 package estg.ipp.pt.quizdroidcmu;
 
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
+
+import layout.HelpPhoneDialogFragment;
 
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -226,7 +228,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }while(true);
     }
 
-    private void contacts(String contact){
+    public void contacts(String contact){
         int min = 1;
         int max = 100;
 
@@ -322,6 +324,11 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         contacts.add("Potato"); // 90%
         contacts.add("Waifu"); // 75%
         Collections.shuffle(contacts);
+
+        FragmentManager fm = getFragmentManager();
+        HelpPhoneDialogFragment helpPhoneDialog = new HelpPhoneDialogFragment();
+        helpPhoneDialog.setCancelable(false);
+        helpPhoneDialog.show(fm, "fragment_help_phone_dialog");
 /*
         helpPhone.setCancelable(false);
 
@@ -345,12 +352,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         helpPhone.show();
         */
         btn_Help2.setEnabled(false);
-    }
-
-    private void showEditDialog() {
-        FragmentManager fm = getSupportFragmentManager();
-        helpPhoneDialog editNameDialog = new helpPhoneDialog();
-        editNameDialog.show(fm, "fragment_help_phone_dialog");
     }
 
     private void helpPublic(){
