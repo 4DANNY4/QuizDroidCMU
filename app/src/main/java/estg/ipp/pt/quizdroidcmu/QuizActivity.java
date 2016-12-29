@@ -1,6 +1,5 @@
 package estg.ipp.pt.quizdroidcmu;
 
-import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,22 +8,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
-
-import layout.HelpPhoneDialogFragment;
 
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -313,8 +305,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void helpPhone(){
-        final AlertDialog.Builder helpPhone = new AlertDialog.Builder(this, R.style.DialogStyleHelpPhone);
-        final String txt = "Who would you like to contact:";
         final ArrayList<String> contacts = new ArrayList<>();
         contacts.add("Albert Einstein"); // 100%
         contacts.add("Doge"); // 80%
@@ -329,41 +319,20 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         HelpPhoneDialogFragment helpPhoneDialog = new HelpPhoneDialogFragment();
         helpPhoneDialog.setCancelable(false);
         helpPhoneDialog.show(fm, "fragment_help_phone_dialog");
-/*
-        helpPhone.setCancelable(false);
 
-        helpPhone.setTitle(txt);
-        helpPhone.setPositiveButton(contacts.get(0).toString(), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                contacts(contacts.get(0).toString());
-            }
-        });
-        helpPhone.setNeutralButton(contacts.get(1).toString(), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                contacts(contacts.get(1).toString());
-            }
-        });
-        helpPhone.setNegativeButton(contacts.get(2).toString(), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                contacts(contacts.get(2).toString());
-            }
-        });
-
-        helpPhone.show();
-        */
         btn_Help2.setEnabled(false);
     }
 
     private void helpPublic(){
-        final AlertDialog.Builder helpPublic = new AlertDialog.Builder(this);
-        helpPublic.setCancelable(false);
 
-        String answers[] = {
-                "-> " + randQuestion.getAnswers()[0].toString() + " <-:"
-                , "-> " + randQuestion.getAnswers()[1].toString() + " <-:"
-                , "-> " + randQuestion.getAnswers()[2].toString() + " <-:"
-                , "-> " + randQuestion.getAnswers()[3].toString() + " <-:"
+        String[] answers = {
+                "Answer A: " + randQuestion.getAnswers()[0].toString()
+                , "Answer B: " + randQuestion.getAnswers()[1].toString()
+                , "Answer C: " + randQuestion.getAnswers()[2].toString()
+                , "Answer D: " + randQuestion.getAnswers()[3].toString()
         };
+
+        int[] progress = new int[4];
 
         int min = 1, max = 100, sum = 0;
         Random r = new Random();
@@ -390,9 +359,11 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             Collections.shuffle(arrayRand);
             for(int i = 0; i < 4; i++){
                 if((randQuestion.getCorrectAnswer()-1)==i){
-                    answers[randQuestion.getCorrectAnswer()-1] += " " + secondTop + "%";
+                    //answers[randQuestion.getCorrectAnswer()-1] += " " + secondTop;
+                    progress[randQuestion.getCorrectAnswer()-1] = secondTop;
                 } else{
-                    answers[i] += " " + arrayRand.get(0) + "%";
+                    //answers[i] += " " + arrayRand.get(0);
+                    progress[i] = arrayRand.get(0);
                     arrayRand.remove(0);
                 }
             }
@@ -403,21 +374,21 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             Collections.shuffle(arrayRand);
             for(int i = 0; i < 4; i++){
                 if((randQuestion.getCorrectAnswer()-1)==i){
-                    answers[randQuestion.getCorrectAnswer()-1] += " " + top + "%";
+                    //answers[randQuestion.getCorrectAnswer()-1] += " " + top;
+                    progress[randQuestion.getCorrectAnswer()-1] = top;
                 } else{
-                   answers[i] += " " + arrayRand.get(0) + "%";
+                    //answers[i] += " " + arrayRand.get(0);
+                    progress[i] = arrayRand.get(0);
                     arrayRand.remove(0);
                 }
             }
         }
-        helpPublic.setTitle("Public Help");
-        helpPublic.setItems(answers, null);
-        helpPublic.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
 
-            }
-        });
-        helpPublic.show();
+        FragmentManager fm = getFragmentManager();
+        HelpPublicDialogFragment helpPublicDialog = new HelpPublicDialogFragment();
+        helpPublicDialog.setCancelable(false);
+        helpPublicDialog.setAnswers(answers, progress);
+        helpPublicDialog.show(fm, "fragment_help_phone_dialog");
     }
 
     @Override

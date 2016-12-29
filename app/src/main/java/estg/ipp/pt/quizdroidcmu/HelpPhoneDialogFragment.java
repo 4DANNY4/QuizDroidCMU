@@ -1,4 +1,4 @@
-package layout;
+package estg.ipp.pt.quizdroidcmu;
 
 import android.app.DialogFragment;
 import android.content.Context;
