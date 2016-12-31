@@ -48,6 +48,7 @@ public class QdDbHelper extends SQLiteOpenHelper {
                 " difficultyID INTEGER NOT NULL," +
                 " correctAnswers INTEGER NOT NULL," +
                 " score INTEGER NOT NULL," +
+                " question VARCHAR(100)" +
                 " FOREIGN KEY (difficultyID) REFERENCES tblDifficulties(id))");
 
         //Inserts

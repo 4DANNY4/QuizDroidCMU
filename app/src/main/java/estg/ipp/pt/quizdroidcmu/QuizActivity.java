@@ -21,8 +21,8 @@ import java.util.Random;
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ArrayList<Question> mQuiz = new ArrayList<>();
-    private Highscore gameTable;
-    private Question randQuestion;
+    private Game gameTable;
+    private Question randQuestion, helpChange ;
     private Difficulty difficulty;
     private TextView txt_question;
     private Button btn_Answer1, btn_Answer2, btn_Answer3, btn_Answer4;
@@ -40,7 +40,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 (String) intent.getSerializableExtra("DifficultyDescription")
         );
 
-        gameTable = new Highscore( 0, "", difficulty, 0, 0);
+        gameTable = new Game(0, new Highscore( 0, "", difficulty, 0, 0));
 
         txt_question = (TextView) findViewById(R.id.txtQuestion);
 
@@ -69,14 +69,16 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         playerNameDialog.setView(input);
         playerNameDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                gameTable.setPlayerName(input.getText().toString().trim());
-                Toast.makeText(getApplicationContext(), "Player: " + gameTable.getPlayerName(),
+                gameTable.getHighScore().setPlayerName(input.getText().toString().trim());
+                Toast.makeText(getApplicationContext(), "Player: " + gameTable.getHighScore().getPlayerName(),
                         Toast.LENGTH_SHORT).show();
             }
         });
         playerNameDialog.show();
 
-        initData();
+        if(((String) intent.getSerializableExtra("TypeGame")).equals("20 Quest")){
+            initData();
+        }
         nextQuestion();
         setGameTable();
 
@@ -99,9 +101,22 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         db.close();
 
         Collections.shuffle(mQuiz);
+
+        if(mQuiz.size() > 20){
+            helpChange = mQuiz.get(mQuiz.size());
+        }else{
+            btn_Help4.setBackgroundResource(R.drawable.ic_50used); //TODO
+            // change
+            btn_Help4.setEnabled(false);
+        }
         do {
             mQuiz.remove(mQuiz.size() - 1);
         }while (mQuiz.size() > 20);
+
+        for(Question q : mQuiz){
+            gameTable.addQuestionsId(q.getId());
+        }
+
     }
 
     private void nextQuestion(){
@@ -122,10 +137,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             mQuiz.remove(rand);
         }else{
             Intent newIntent = new Intent(this, ScoreActivity.class);
-            newIntent.putExtra("ScorePlayerName", gameTable.getPlayerName());
-            newIntent.putExtra("ScoreDifficulty", gameTable.getDifficulty().getName());
-            newIntent.putExtra("ScoreCorrectAnswers", gameTable.getCorrectAnswers());
-            newIntent.putExtra("Score", gameTable.getScore());
+            newIntent.putExtra("ScorePlayerName", gameTable.getHighScore().getPlayerName());
+            newIntent.putExtra("ScoreDifficulty", gameTable.getHighScore().getDifficulty().getName());
+            newIntent.putExtra("ScoreCorrectAnswers", gameTable.getHighScore().getCorrectAnswers());
+            newIntent.putExtra("Score", gameTable.getHighScore().getScore());
             startActivity(newIntent);
             finish();
         }
@@ -135,10 +150,16 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String sql = "INSERT INTO tblGames(playerName, difficultyID, correctAnswers, score)" +
-                " VALUES('" + gameTable.getPlayerName() + "','" + difficulty.getId() + "','0','0')";
+                " VALUES('" + gameTable.getHighScore().getPlayerName() + "','" + difficulty.getId() + "','0','0')";
         db.execSQL(sql);
-        sql = "SELECT * FROM tblGames";
+
+        sql = "SELECT id FROM tblGames";
         Cursor c = db.rawQuery(sql,null);
+        c.moveToFirst();
+        gameTable.setId(c.getInt(0));
+
+        sql = "SELECT * FROM tblGames";
+        c = db.rawQuery(sql,null);
         c.moveToLast();
         if (c != null ){
             gameTable.setId(c.getInt(0));
@@ -148,12 +169,12 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private void setScores(int correctAnswer){
         if(randQuestion.getCorrectAnswer() == correctAnswer){
             //Dialog correct answer
-            gameTable.setScore(gameTable.getScore()+randQuestion.getReward());
-            gameTable.setCorrectAnswers(gameTable.getCorrectAnswers()+1);
+            gameTable.getHighScore().setScore(gameTable.getHighScore().getScore()+randQuestion.getReward());
+            gameTable.getHighScore().setCorrectAnswers(gameTable.getHighScore().getCorrectAnswers()+1);
             QdDbHelper dbHelper = new QdDbHelper(this);
             SQLiteDatabase db = dbHelper.getReadableDatabase();
-            String sql = "UPDATE tblGames SET score = '" + gameTable.getScore() +
-                    "', correctAnswers = '" + gameTable.getCorrectAnswers() +
+            String sql = "UPDATE tblGames SET score = '" + gameTable.getHighScore().getScore() +
+                    "', correctAnswers = '" + gameTable.getHighScore().getCorrectAnswers() +
                     "' WHERE id = " + gameTable.getId() + ";";
             db.execSQL(sql);
         }else{
@@ -205,6 +226,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             }
         }while (help < 2);
         btn_Help1.setEnabled(false);
+        btn_Help1.setBackgroundResource(R.drawable.ic_50used);
     }
 
     private int randAnswer(){
@@ -403,12 +425,16 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             setScores(4);
         } else if(view.getId() == R.id.btnHelp1){
             helpFiftyFifty();
+            gameTable.setHelpFiftyFifty();
         } else if(view.getId() == R.id.btnHelp2){
             helpPhone();
+            gameTable.setHelpPhone();
         } else if(view.getId() == R.id.btnHelp3){
             helpPublic();
+            gameTable.setHelpPublic();
         } else if(view.getId() == R.id.btnHelp4){
             nextQuestion();
+            gameTable.setHelpChange();
             btn_Help4.setEnabled(false);
         }
     }
