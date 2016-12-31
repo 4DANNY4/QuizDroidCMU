@@ -8,6 +8,7 @@
         android:textColor="@color/textIconsColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"/>
+        android:padding="5dp"
+        android:textSize="15sp"/>
 
 </LinearLayout>

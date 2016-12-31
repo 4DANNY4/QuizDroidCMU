@@ -2,10 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
-    android:layout_marginStart="5dp"
-    android:layout_marginEnd="10dp">
+    android:padding="10dp"
+    android:background="@color/primaryColor">
 
     <TextView
         android:id="@+id/tv_dmanTitle"
@@ -14,7 +12,17 @@
         android:text="Add Difficulty"
         android:textSize="20sp"
         android:textStyle="italic"
-        android:textAllCaps="true" />
+        android:textColor="@color/accentColor"
+        android:textAllCaps="true"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/hor_line"/>
 
     <LinearLayout
         android:layout_marginTop="10dp"
@@ -24,49 +32,63 @@
         <TextView
             android:text="Name: "
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/primaryText"/>
         <EditText
             android:id="@+id/txt_dname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="top|start"
+            android:maxLength="10"
             android:textSize="14sp"
-            android:lines="3" />
+            android:inputType="textPersonName"
+            android:textColor="@color/textIconsColor"
+            android:lines="3"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
         <TextView
             android:text="Description: "
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/primaryText"/>
         <EditText
             android:id="@+id/txt_ddesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="top|start"
+            android:maxLength="50"
             android:textSize="14sp"
+            android:inputType="textPersonName"
+            android:textColor="@color/textIconsColor"
             android:lines="3" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btnAddDifficulty"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="Add"
         android:textSize="30sp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:background="@drawable/boxshape"/>
 
     <Button
         android:id="@+id/btnEditDifficulty"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="Edit"
         android:textSize="30sp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:background="@drawable/boxshape"/>
 
 
 </LinearLayout>

@@ -28,12 +28,12 @@ public class HighscoreByDifficultyAdapter extends ArrayAdapter<Highscore> {
             v = vi.inflate(R.layout.row_list_tophighscoresbydifficulty, null);
         }
 
-        TextView txt_difficulty = (TextView) v.findViewById(R.id.txt_tophighscorebydifficulty_difficulty);
+        //TextView txt_difficulty = (TextView) v.findViewById(R.id.txt_tophighscorebydifficulty_difficulty);
         TextView txt_playerName = (TextView) v.findViewById(R.id.txt_tophighscorebydifficulty_playername);
         TextView txt_streak = (TextView) v.findViewById(R.id.txt_tophighscorebydifficulty_streak);
         TextView txt_score = (TextView) v.findViewById(R.id.txt_tophighscorebydifficulty_score);
 
-        txt_difficulty.setText(hList.get(position).getDifficulty().getName());
+        //txt_difficulty.setText(hList.get(position).getDifficulty().getName());
         txt_playerName.setText(hList.get(position).getPlayerName());
         txt_streak.setText(String.valueOf(hList.get(position).getCorrectAnswers()));
         txt_score.setText(String.valueOf(hList.get(position).getScore()));

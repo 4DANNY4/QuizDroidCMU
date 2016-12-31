@@ -19,21 +19,49 @@
             android:layout_weight="1"
             android:background="@drawable/ic_keyboard_arrow_left_black_36dp"/>
 
-        <Button
-            android:id="@+id/btnStartGame"
-
-            android:textColor="#DEDEDE"
-            android:textSize="30sp"
-
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:background="@drawable/startshape"
-            android:shadowColor="#000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="3"
-            />
+            android:padding="3dp"
+            android:background="@drawable/startshape">
+
+            <LinearLayout
+                android:id="@+id/btnStartGame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:clickable="true">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:text="PLAY"
+                    android:textColor="@color/primaryText"
+                    android:textSize="35sp"
+                    android:gravity="center"
+                    android:background="#07000000"
+                    android:shadowColor="#000000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="3"/>
+                <TextView
+                    android:id="@+id/txt_diff"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="MMMMMMMMMM"
+                    android:textColor="#DEDEDE"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:background="#07000000"
+                    android:shadowColor="#000000"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2" />
+            </LinearLayout>
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/btnNextDifficulty"
@@ -45,8 +73,28 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <Button
+        android:id="@+id/btnContinueGame"
+
+        android:text="Continue"
+        android:textColor="@color/primaryText"
+        android:textSize="20sp"
+
         android:layout_marginTop="10dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="3dp"
+        android:background="@drawable/startshape"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        />
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
@@ -69,7 +117,7 @@
     </LinearLayout>
 
     <TextView
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/menuHighestScore"

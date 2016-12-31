@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@color/primaryColor"
     android:padding="20dp">
 
     <TextView
@@ -9,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Answer A: "
+        android:textColor="@color/textIconsColor"
         android:textAlignment="textStart"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +28,8 @@
             android:id="@+id/txt1DialogProgress"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:textColor="@color/textIconsColor"/>
     </LinearLayout>
 
     <TextView
@@ -34,6 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Answer B: "
+        android:textColor="@color/textIconsColor"
         android:textAlignment="textStart"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,7 +55,8 @@
             android:id="@+id/txt2DialogProgress"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:textColor="@color/textIconsColor"/>
     </LinearLayout>
 
 
@@ -60,6 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Answer C: "
+        android:textColor="@color/textIconsColor"
         android:textAlignment="textStart"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,7 +83,8 @@
             android:id="@+id/txt3DialogProgress"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:textColor="@color/textIconsColor"/>
     </LinearLayout>
 
     <TextView
@@ -85,6 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Answer D: "
+        android:textColor="@color/textIconsColor"
         android:textAlignment="textStart"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -102,13 +110,18 @@
             android:id="@+id/txt4DialogProgress"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:textColor="@color/textIconsColor"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/btnEndDialog"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="OK"/>
+        android:layout_width="65dp"
+        android:layout_height="45dp"
+        android:background="@drawable/box2shapewhite"
+        android:text="OK"
+        android:textStyle="bold"
+        android:textColor="@color/primaryText"/>
 </LinearLayout>

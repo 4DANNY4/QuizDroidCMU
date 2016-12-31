@@ -11,16 +11,18 @@
         <TextView
             android:id="@+id/txt_tophighscore_difficulty"
             android:text="Medium"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold|italic"
             android:textColor="#263238"
+            android:paddingStart="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/txt_tophighscore_playername"
             android:text="playername"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textColor="#263238"
+            android:paddingStart="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -28,7 +30,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1.5">
+        android:layout_weight="1">
         <TextView
             android:id="@+id/txt_tophighscore_score"
             android:text="13500"

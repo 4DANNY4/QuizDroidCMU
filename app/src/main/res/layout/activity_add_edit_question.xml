@@ -4,11 +4,9 @@
     android:id="@+id/activity_add_edit"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
-    android:layout_marginStart="5dp"
-    android:layout_marginEnd="10dp"
+    android:padding="10dp"
     android:orientation="vertical"
+    android:background="@color/primaryColor"
     tools:context="estg.ipp.pt.quizdroidcmu.AddEditQuestion">
 
     <TextView
@@ -18,43 +16,60 @@
         android:text="Add Question"
         android:textSize="20sp"
         android:textStyle="italic"
-        android:textAllCaps="true" />
+        android:textColor="@color/accentColor"
+        android:textAllCaps="true"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/hor_line"/>
 
     <LinearLayout
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
             android:text="Question: "
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryText"/>
         <EditText
             android:id="@+id/txt_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="top|left"
+            android:gravity="top|start"
+            android:maxLength="50"
             android:textSize="14sp"
+            android:textColor="@color/textIconsColor"
             android:lines="3" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:orientation="horizontal">
         <TextView
             android:text="Difficulty: "
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:textColor="@color/primaryText"/>
         <Spinner
             android:id="@+id/spin_difficulty"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:textColor="@color/textIconsColor"/>
     </LinearLayout>
 
     <LinearLayout
@@ -70,16 +85,20 @@
             android:layout_marginEnd="10dp"
             android:orientation="vertical">
             <TextView
-                android:text="Answer(1): "
+                android:text="Answer(1)"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/primaryText"/>
             <EditText
                 android:id="@+id/txt_answer1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top|left"
                 android:textSize="14sp"
-                android:lines="2" />
+                android:maxLength="24"
+                android:lines="2"
+                android:textColor="@color/textIconsColor"/>
         </LinearLayout>
 
         <LinearLayout
@@ -90,16 +109,20 @@
             android:layout_marginStart="5dp"
             android:orientation="vertical">
             <TextView
-                android:text="Answer(2): "
+                android:text="Answer(2)"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/primaryText"/>
             <EditText
                 android:id="@+id/txt_answer2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top|left"
                 android:textSize="14sp"
-                android:lines="2" />
+                android:maxLength="24"
+                android:lines="2"
+                android:textColor="@color/textIconsColor"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -116,16 +139,20 @@
             android:layout_marginEnd="10dp"
             android:orientation="vertical">
             <TextView
-                android:text="Answer(3): "
+                android:text="Answer(3)"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/primaryText"/>
             <EditText
                 android:id="@+id/txt_answer3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top|left"
                 android:textSize="14sp"
-                android:lines="2" />
+                android:maxLength="24"
+                android:lines="2"
+                android:textColor="@color/textIconsColor"/>
         </LinearLayout>
 
         <LinearLayout
@@ -136,16 +163,20 @@
             android:layout_marginStart="5dp"
             android:orientation="vertical">
             <TextView
-                android:text="Answer(4): "
+                android:text="Answer(4)"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/primaryText"/>
             <EditText
                 android:id="@+id/txt_answer4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top|left"
                 android:textSize="14sp"
-                android:lines="2" />
+                android:maxLength="24"
+                android:lines="2"
+                android:textColor="@color/textIconsColor"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -160,6 +191,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="14sp"
+            android:textColor="@color/primaryText"
             android:layout_gravity="center"/>
 
         <Spinner
@@ -169,11 +201,12 @@
             android:layout_gravity="center"
             android:textAlignment="center"
             android:textSize="14sp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:textColor="@color/textIconsColor"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_gravity="center"
         android:layout_width="200dp"
         android:layout_height="wrap_content">
@@ -182,6 +215,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/primaryText"
             android:layout_gravity="center"/>
 
         <EditText
@@ -190,22 +224,29 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_horizontal"
-            android:layout_weight="1" />
+            android:inputType="number"
+            android:maxLength="4"
+            android:layout_weight="1"
+            android:textColor="@color/textIconsColor"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/btnAddQuestion"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
         android:text="Add"
         android:textSize="30sp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:background="@drawable/boxshape"/>
 
     <Button
         android:id="@+id/btnEditQuestion"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
         android:text="Edit"
         android:textSize="30sp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:background="@drawable/boxshape"/>
 </LinearLayout>

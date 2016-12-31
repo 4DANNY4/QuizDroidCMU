@@ -24,4 +24,9 @@
         <item name="android:layout_gravity">left</item>
         <item name="android:windowIsFloating">true</item>
     </style>
+
+    <style name="PrefScreen" parent="AppTheme.FullScreen">
+        <item name="android:textColor">@color/textIconsColor</item>
+        <item name="android:background">@color/primaryColor</item>
+    </style>
 </resources>

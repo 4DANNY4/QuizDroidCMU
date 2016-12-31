@@ -58,9 +58,11 @@ public class AddEditQuestion extends AppCompatActivity implements View.OnClickLi
         btnEdit = (Button) findViewById(R.id.btnEditQuestion);
         btnEdit.setOnClickListener(this);
 
-        dAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, dList);
+        dAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, dList);
+        dAdapter.setDropDownViewResource(R.layout.spinner_drop_down_popup);
         difficulty.setAdapter(dAdapter);
-        ArrayAdapter<CharSequence> answerNum = ArrayAdapter.createFromResource(this, R.array.numAnswers, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> answerNum = ArrayAdapter.createFromResource(this, R.array.numAnswers, R.layout.spinner_item);
+        answerNum.setDropDownViewResource(R.layout.spinner_drop_down_popup);
         correctAnswer.setAdapter(answerNum);
 
         action = getIntent().getStringExtra("Action");
