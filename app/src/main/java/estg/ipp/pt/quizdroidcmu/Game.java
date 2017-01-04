@@ -7,11 +7,14 @@ public class Game {
     private Highscore highScore;
     private ArrayList<Integer> questionsId;
     private boolean helpFiftyFifty, helpPhone, helpPublic, helpChange;
+    private boolean helpsDisabled, unlimited;
 
-    public Game(int id, Highscore score) {
+    public Game(int id, Highscore highScore, boolean unlimited, boolean helpsDisabled) {
         this.id = id;
-        this.highScore = score;
+        this.highScore = highScore;
         questionsId = new ArrayList<>();
+        this.unlimited = unlimited;
+        this.helpsDisabled = helpsDisabled;
         helpFiftyFifty = helpPhone = helpPublic = helpChange = false;
     }
 
@@ -33,13 +36,21 @@ public class Game {
 
     public void addQuestionsId(int questionId){ this.questionsId.add(questionId); }
 
-    public void removeQuestionsId(int questionId){this.questionsId.remove(questionId); }
+    public void removeQuestionsId(int pos){this.questionsId.remove(pos); }
+
+    public boolean isHelpsDisabled() {
+        return helpsDisabled;
+    }
+
+    public void setHelpsDisabled(boolean helpsDisabled) {
+        this.helpsDisabled = helpsDisabled;
+    }
 
     public boolean isHelpFiftyFifty() {
         return helpFiftyFifty;
     }
 
-    public void setHelpFiftyFifty() {
+    public void setHelpFiftyFiftyUsed() {
         this.helpFiftyFifty = true;
     }
 
@@ -47,7 +58,7 @@ public class Game {
         return helpPhone;
     }
 
-    public void setHelpPhone() {
+    public void setHelpPhoneUsed() {
         this.helpPhone = true;
     }
 
@@ -55,7 +66,7 @@ public class Game {
         return helpPublic;
     }
 
-    public void setHelpPublic() {
+    public void setHelpPublicUsed() {
         this.helpPublic = true;
     }
 
@@ -63,7 +74,13 @@ public class Game {
         return helpChange;
     }
 
-    public void setHelpChange() {
+    public void setHelpChangeUsed() {
         this.helpChange = true;
+    }
+
+    public boolean getUnlimited() { return unlimited; }
+
+    public void setUnlimited(boolean unlimited) {
+        this.unlimited = unlimited;
     }
 }

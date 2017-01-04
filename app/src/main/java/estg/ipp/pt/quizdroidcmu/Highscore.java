@@ -7,13 +7,15 @@ public class Highscore {
     private Difficulty difficulty;
     private int correctAnswers;
     private int score;
+    private boolean unlimited;
 
-    public Highscore(int id, String playerName, Difficulty difficulty, int correctAnswers, int score) {
+    public Highscore(int id, String playerName, Difficulty difficulty, int correctAnswers, int score, boolean unlimited) {
         this.id = id;
         this.playerName = playerName;
         this.difficulty = difficulty;
         this.correctAnswers = correctAnswers;
         this.score = score;
+        this.unlimited = unlimited;
     }
 
     public int getId() {
@@ -53,4 +55,12 @@ public class Highscore {
     }
 
     public void setScore(int score) { this.score = score;}
+
+    public boolean isUnlimited() {
+        return unlimited;
+    }
+
+    public void setUnlimited(boolean unlimited) {
+        this.unlimited = unlimited;
+    }
 }

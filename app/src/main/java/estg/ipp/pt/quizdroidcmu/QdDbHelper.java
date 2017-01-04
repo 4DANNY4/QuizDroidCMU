@@ -86,15 +86,15 @@ public class QdDbHelper extends SQLiteOpenHelper {
                 " VALUES('1','8+7?','5','2','200')");
 
         db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score)" +
-                " VALUES('GameEasy','1','30','2000')");
+                " VALUES('GameEasy','1','30','2000','1')");
         db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score)" +
-                " VALUES('GameMedium','2','15','1623')");
+                " VALUES('GameMedium','2','15','1623','0')");
         db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score)" +
-                " VALUES('GameHard','3','1','30')");
+                " VALUES('GameHard','3','1','30','0')");
         db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score)" +
-                " VALUES('GameHard2','3','6','400')");
+                " VALUES('GameHard2','3','6','400','1')");
         db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score)" +
-                " VALUES('GameHard3','3','3','160')");
+                " VALUES('GameHard3','3','3','160','0')");
     }
 
     @Override
