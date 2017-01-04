@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     <PreferenceCategory android:title="Game Settings" android:layout="@layout/pref_category">
-        <CheckBoxPreference android:title="Help activated" android:summary="Activates Help feature."
-            android:key="pref_activateHelp" android:defaultValue="true"/>
-        <CheckBoxPreference android:title="Question limit" android:summary="Limit."
-            android:key="pref_qLimit" android:defaultValue="true"/>
+        <CheckBoxPreference android:title="Helps deactivated" android:summary="Deactivates Help feature."
+            android:key="pref_helpsDisabled" android:defaultValue="false"/>
+        <CheckBoxPreference android:title="Unlimited style" android:summary="Unlimited game style."
+            android:key="pref_unlimited" android:defaultValue="false"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="Game Manage" android:layout="@layout/pref_category">
         <Preference android:key="pref_key_manageQuestion"

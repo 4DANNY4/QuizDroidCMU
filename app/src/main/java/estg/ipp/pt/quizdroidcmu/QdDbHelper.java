@@ -41,7 +41,7 @@ public class QdDbHelper extends SQLiteOpenHelper {
                 " difficultyID INTEGER NOT NULL," +
                 " correctAnswers INTEGER NOT NULL," +
                 " score INTEGER NOT NULL," +
-                " qLimit INTEGER NOT NULL," +
+                " unlimited BOOLEAN NOT NULL," +
                 " FOREIGN KEY (difficultyID) REFERENCES tblDifficulties(id))");
         db.execSQL("CREATE TABLE tblGames(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," + //Games Table (Games not finished)
@@ -50,12 +50,12 @@ public class QdDbHelper extends SQLiteOpenHelper {
                 " correctAnswers INTEGER NOT NULL," +
                 " score INTEGER NOT NULL," +
                 " questions VARCHAR(100)" +
-                " qLimit INTEGER NOT NULL," +
-                " helpsEnabled INTEGER NOT NULL," +
-                " helpFiftyFifty INTEGER NOT NULL," +
-                " helpPhone INTEGER NOT NULL," +
-                " helpPublic INTEGER NOT NULL," +
-                " helpChange INTEGER NOT NULL," +
+                " unlimited BOOLEAN NOT NULL," +
+                " helpsDisabled BOOLEAN NOT NULL," +
+                " helpFiftyFifty BOOLEAN NOT NULL," +
+                " helpPhone BOOLEAN NOT NULL," +
+                " helpPublic BOOLEAN NOT NULL," +
+                " helpChange BOOLEAN NOT NULL," +
                 " FOREIGN KEY (difficultyID) REFERENCES tblDifficulties(id))");
 
         //Inserts
