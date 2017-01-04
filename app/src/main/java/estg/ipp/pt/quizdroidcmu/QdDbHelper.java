@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QdDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "QuizDroid.db";
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 14;
 
     public QdDbHelper(Context context) { super(context, DATABASE_NAME, null, DATABASE_VERSION); }
 
@@ -41,6 +41,7 @@ public class QdDbHelper extends SQLiteOpenHelper {
                 " difficultyID INTEGER NOT NULL," +
                 " correctAnswers INTEGER NOT NULL," +
                 " score INTEGER NOT NULL," +
+                " qLimit INTEGER NOT NULL," +
                 " FOREIGN KEY (difficultyID) REFERENCES tblDifficulties(id))");
         db.execSQL("CREATE TABLE tblGames(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," + //Games Table (Games not finished)
@@ -48,7 +49,13 @@ public class QdDbHelper extends SQLiteOpenHelper {
                 " difficultyID INTEGER NOT NULL," +
                 " correctAnswers INTEGER NOT NULL," +
                 " score INTEGER NOT NULL," +
-                " question VARCHAR(100)" +
+                " questions VARCHAR(100)" +
+                " qLimit INTEGER NOT NULL," +
+                " helpsEnabled INTEGER NOT NULL," +
+                " helpFiftyFifty INTEGER NOT NULL," +
+                " helpPhone INTEGER NOT NULL," +
+                " helpPublic INTEGER NOT NULL," +
+                " helpChange INTEGER NOT NULL," +
                 " FOREIGN KEY (difficultyID) REFERENCES tblDifficulties(id))");
 
         //Inserts
