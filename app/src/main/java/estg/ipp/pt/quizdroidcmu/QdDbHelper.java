@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QdDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "QuizDroid.db";
-    private static final int DATABASE_VERSION = 16;
+    private static final int DATABASE_VERSION = 17;
 
     public QdDbHelper(Context context) { super(context, DATABASE_NAME, null, DATABASE_VERSION); }
 
@@ -85,16 +85,16 @@ public class QdDbHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO tblQuestions(difficultyID, text, answerID, rightAnswer, reward)" +
                 " VALUES('1','8+7?','5','2','200')");
 
-        db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score, unlimited)" +
-                " VALUES('GameEasy','1','30','2000','1')");
-        db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score, unlimited)" +
-                " VALUES('GameMedium','2','15','1623','0')");
-        db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score, unlimited)" +
-                " VALUES('GameHard','3','1','30','0')");
-        db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score, unlimited)" +
-                " VALUES('GameHard2','3','6','400','1')");
-        db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score, unlimited)" +
-                " VALUES('GameHard3','3','3','160','0')");
+        //db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score, unlimited)" +
+        //        " VALUES('GameEasy','1','30','2000','1')");
+        //db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score, unlimited)" +
+        //        " VALUES('GameMedium','2','15','1623','0')");
+        //db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score, unlimited)" +
+        //        " VALUES('GameHard','3','1','30','0')");
+        //db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score, unlimited)" +
+        //        " VALUES('GameHard2','3','6','400','1')");
+        //db.execSQL("INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score, unlimited)" +
+        //        " VALUES('GameHard3','3','3','160','0')");
     }
 
     @Override

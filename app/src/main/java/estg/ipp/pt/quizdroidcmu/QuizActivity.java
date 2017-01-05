@@ -37,8 +37,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
         Intent intent = getIntent();
 
-
-
         txt_question = (TextView) findViewById(R.id.txtQuestion);
 
         btn_Answer1 = (Button) findViewById(R.id.btnAnswer1);
@@ -216,8 +214,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 if(gameTable.getQuestionsId().get(i) == mQuiz.get(j).getId()){
                     if (i == gameTable.getQuestionsId().size()-1){
                         mQuiz.add(0, mQuiz.get(j));
+                        mQuiz.remove(j+1);
+                    } else {
+                        mQuiz.remove(j);
                     }
-                    mQuiz.remove(j);
                 }
 
             }
@@ -228,6 +228,15 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 mQuiz.remove(mQuiz.size() - 1);
             }
         }
+
+        randQuestion = new Question(mQuiz.get(0));
+        txt_question.setText(randQuestion.getText());
+        btn_Answer1.setText(randQuestion.getAnswers()[0]);
+        btn_Answer2.setText(randQuestion.getAnswers()[1]);
+        btn_Answer3.setText(randQuestion.getAnswers()[2]);
+        btn_Answer4.setText(randQuestion.getAnswers()[3]);
+
+        mQuiz.remove(0);
 
         Toast.makeText(getApplicationContext(), "Welcome back " + gameTable.getHighScore().getPlayerName(),
                 Toast.LENGTH_SHORT).show();
@@ -249,6 +258,27 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             btn_Answer3.setText(randQuestion.getAnswers()[2]);
             btn_Answer4.setText(randQuestion.getAnswers()[3]);
 
+            QdDbHelper dbHelper = new QdDbHelper(this);
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+            gameTable.addQuestionsId(randQuestion.getId());
+            String questions = "";
+            for(Integer id : gameTable.getQuestionsId()){
+                if (questions.equals("")) {
+                    questions = String.valueOf(id);
+                }else {
+                    questions += ";" + id;
+                }
+            }
+
+            String sql = "UPDATE tblGames " +
+                    "SET questions = '" + questions + "'" +
+                    "WHERE id = " + gameTable.getId() + ";";
+            db.execSQL(sql);
+
+            dbHelper.close();
+            db.close();
+
             mQuiz.remove(rand);
         }else{
             Intent newIntent = new Intent(this, ScoreActivity.class);
@@ -257,6 +287,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             newIntent.putExtra("ScoreDifficultyName", gameTable.getHighScore().getDifficulty().getName());
             newIntent.putExtra("ScoreCorrectAnswers", gameTable.getHighScore().getCorrectAnswers());
             newIntent.putExtra("Score", gameTable.getHighScore().getScore());
+            newIntent.putExtra("Unlimited", gameTable.getHighScore().isUnlimited());
+            newIntent.putExtra("SavedGameID", gameTable.getId());
             startActivity(newIntent);
             finish();
         }
@@ -300,21 +332,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 //TODO END GAME
             }
         }
-
-        gameTable.addQuestionsId(randQuestion.getId());
-        String questions = "";
-        for(Integer id : gameTable.getQuestionsId()){
-            if (questions.equals("")) {
-                questions = String.valueOf(id);
-            }else {
-                questions += ";" + id;
-            }
-        }
-
-        String sql = "UPDATE tblGames " +
-                "SET questions = '" + questions + "'" +
-                "WHERE id = " + gameTable.getId() + ";";
-        db.execSQL(sql);
 
         dbHelper.close();
         db.close();

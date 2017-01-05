@@ -14,6 +14,7 @@ public class ScoreActivity extends AppCompatActivity implements View.OnClickList
     private Highscore score;
     private TextView txt_ScorePlayerName, txt_ScoreDifficulty, txt_ScoreCorrectAnswers, txt_Score, txt_unlimited;
     private Button btnMenu, btnHighscores;
+    private int savedGameID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,8 @@ public class ScoreActivity extends AppCompatActivity implements View.OnClickList
                 intent.getIntExtra("ScoreCorrectAnswers", 0),
                 intent.getIntExtra("Score", 0),
                 intent.getBooleanExtra("Unlimited", false));
+
+        savedGameID = intent.getIntExtra("SavedGameID", 0);
 
         btnMenu = (Button) findViewById(R.id.btnEndMenu);
         btnMenu.setOnClickListener(this);
@@ -69,20 +72,8 @@ public class ScoreActivity extends AppCompatActivity implements View.OnClickList
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        //Get lowest value from DB
-        //If score.getscore() > lowest value
-        //Insert into DB
-
         String countScoresSql;
-        int unlimited = -1;
-
-        if(score.isUnlimited()) {
-            unlimited = 1;
-            countScoresSql = "SELECT COUNT(*) FROM tblHighscores WHERE tblHighscores.unlimited=" + unlimited;
-        } else {
-            unlimited = 0;
-            countScoresSql = "SELECT COUNT(*) FROM tblHighscores WHERE tblHighscores.unlimited=" + unlimited;
-        }
+        countScoresSql = "SELECT COUNT(*) FROM tblHighscores WHERE tblHighscores.unlimited=" + score.isUnlimited();
 
         Cursor c = db.rawQuery(countScoresSql, null);
         if(c != null) {
@@ -91,7 +82,7 @@ public class ScoreActivity extends AppCompatActivity implements View.OnClickList
 
         String getLowestScoreSql;
         if(c.getInt(0) >= 10) {
-            if(unlimited == 1) {
+            if(score.isUnlimited()) {
                 getLowestScoreSql = "SELECT id, score FROM tblHighscores ORDER BY tblHighscores.correctAnswers ASC LIMIT 1";
             } else {
                 getLowestScoreSql = "SELECT id, score FROM tblHighscores ORDER BY tblHighscores.score ASC LIMIT 1";
@@ -107,19 +98,16 @@ public class ScoreActivity extends AppCompatActivity implements View.OnClickList
             }
         }
 
+        String deleteSavedGameSql = "DELETE FROM tblGames WHERE tblGames.id='" + savedGameID;
+        db.execSQL(deleteSavedGameSql);
+
         String insertSql = "INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score, unlimited)" +
                 " VALUES('" + score.getPlayerName() + "'," +
                 "'" + score.getDifficulty().getId() + "'," +
                 "'" + score.getCorrectAnswers() + "'," +
                 "'" + score.getScore() + "'," +
-                "'" + unlimited + "')";
+                "'" + score.isUnlimited() + "')";
         db.execSQL(insertSql);
-
-        //TODO: REMOVE PRINTS
-        System.out.println(score.getPlayerName());
-        System.out.println(score.getDifficulty().getId());
-        System.out.println(score.getCorrectAnswers());
-        System.out.println(score.getScore());
 
         dbHelper.close();
         db.close();
