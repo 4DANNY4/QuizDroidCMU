@@ -203,10 +203,13 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        String questions = cGame.getString(5);
-        String[] qSplit = questions.split(";");
-        for (String s : qSplit){
-            gameTable.addQuestionsId(Integer.valueOf(s));
+
+        if(cGame.getString(5) != null){
+            String questions = cGame.getString(5);
+            String[] qSplit = questions.split(";");
+            for (String s : qSplit){
+                gameTable.addQuestionsId(Integer.valueOf(s));
+            }
         }
 
         String sqlQuestions = "SELECT * FROM tblQuestions LEFT JOIN tblAnswers ON tblQuestions.answerID = tblAnswers.id WHERE tblQuestions.difficultyID = '" + gameTable.getHighScore().getDifficulty().getId() + "'";

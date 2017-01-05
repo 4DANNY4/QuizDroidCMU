@@ -33,6 +33,8 @@ public class ListContinueActivity extends android.app.ListActivity implements Vi
     }
 
     private void loadSaves() {
+        gList.clear();
+
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
