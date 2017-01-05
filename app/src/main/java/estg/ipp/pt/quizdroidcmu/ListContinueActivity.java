@@ -91,5 +91,6 @@ public class ListContinueActivity extends android.app.ListActivity implements Vi
         newIntent.putExtra("isContinue", true);
         newIntent.putExtra("GameTableId", gList.get(position).getId());
         startActivity(newIntent);
+        finish();
     }
 }
