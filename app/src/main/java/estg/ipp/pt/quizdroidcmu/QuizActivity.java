@@ -19,6 +19,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.StringTokenizer;
 
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -26,7 +27,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private Game gameTable;
     private Question randQuestion, helpChange ;
     private Difficulty difficulty;
-    private TextView txt_question;
+    private TextView txt_question, txt_gameScore;
     private Button btn_Answer1, btn_Answer2, btn_Answer3, btn_Answer4;
     private Button btn_Help1, btn_Help2, btn_Help3, btn_Help4;
 
@@ -38,6 +39,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = getIntent();
 
         txt_question = (TextView) findViewById(R.id.txtQuestion);
+        txt_gameScore = (TextView) findViewById(R.id.txt_gameScore);
 
         btn_Answer1 = (Button) findViewById(R.id.btnAnswer1);
         btn_Answer1.setOnClickListener(this);
@@ -92,6 +94,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 initDataLimit();
             }
 
+            txt_gameScore.setText(String.valueOf(0));
             nextQuestion();
         }
 
@@ -130,7 +133,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         if(mQuiz.size() > 20){
             helpChange = mQuiz.get(mQuiz.size());
         }else{
-            btn_Help4.setBackgroundResource(R.drawable.ic_50used); //TODO
             //TODO btn_Help3.setBackgroundResource(R.drawable.-----used);
             gameTable.setHelpChangeUsed();
             btn_Help4.setEnabled(false);
@@ -254,6 +256,12 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         btn_Answer3.setText(randQuestion.getAnswers()[2]);
         btn_Answer4.setText(randQuestion.getAnswers()[3]);
 
+        if(gameTable.isUnlimited()) {
+            txt_gameScore.setText(String.valueOf(gameTable.getHighScore().getCorrectAnswers()));
+        }else{
+            txt_gameScore.setText(String.valueOf(gameTable.getHighScore().getScore()));
+        }
+
         mQuiz.remove(0);
 
         Toast.makeText(getApplicationContext(), "Welcome back " + gameTable.getHighScore().getPlayerName(),
@@ -338,6 +346,12 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             //Dialog correct answer
             gameTable.getHighScore().setScore(gameTable.getHighScore().getScore()+randQuestion.getReward());
             gameTable.getHighScore().setCorrectAnswers(gameTable.getHighScore().getCorrectAnswers()+1);
+
+            if(gameTable.isUnlimited()) {
+                txt_gameScore.setText(String.valueOf(gameTable.getHighScore().getCorrectAnswers()));
+            }else{
+                txt_gameScore.setText(String.valueOf(gameTable.getHighScore().getScore()));
+            }
 
             String sql = "UPDATE tblGames SET score = '" + gameTable.getHighScore().getScore() +
                     "', correctAnswers = '" + gameTable.getHighScore().getCorrectAnswers() +
