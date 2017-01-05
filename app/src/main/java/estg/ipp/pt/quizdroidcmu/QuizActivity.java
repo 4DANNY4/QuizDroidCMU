@@ -61,6 +61,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         if (intent.getBooleanExtra("isContinue", false)) {
             gameTable = new Game(intent.getIntExtra("GameTableId",0), new Highscore(0, "", new Difficulty(0,"",""), 0, 0, false), false, false);
             initDataContinue();
+            //lastQuestion();
         } else{
             difficulty = new Difficulty(
                     intent.getIntExtra("DifficultyID", 0),
@@ -92,9 +93,11 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             }else{
                 initDataLimit();
             }
+
+            nextQuestion();
         }
 
-        nextQuestion();
+
 
         if(gameTable.isHelpsDisabled()){
             btn_Help1.setVisibility(View.GONE);
@@ -152,25 +155,37 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             if (cDiff != null && cDiff.moveToFirst()){
                 difficulty = new Difficulty(cDiff.getInt(0), cDiff.getString(1), cDiff.getString(2));
             }
-            if (cGame.getInt(6) == 0) { //unlimited
+            if (cGame.getString(6).equals("false")) { //unlimited
                 gameTable.setHighScore(new Highscore(0, cGame.getString(1), difficulty, cGame.getInt(3), cGame.getInt(4), false));
             } else{
                 gameTable.setHighScore(new Highscore(0, cGame.getString(1), difficulty, cGame.getInt(3), cGame.getInt(4), true));
             }
-            if (cGame.getInt(7) == 1){ //helpsDisabled
+            if (cGame.getString(7).equals("true")) { //helpsDisabled
                 gameTable.setHelpsDisabled(true);
-            } else{
-                if (cGame.getInt(8) == 1) { //helpFiftyFifty
+                btn_Help1.setVisibility(View.GONE);
+                btn_Help2.setVisibility(View.GONE);
+                btn_Help3.setVisibility(View.GONE);
+                btn_Help4.setVisibility(View.GONE);
+            } else {
+                if (cGame.getString(8).equals("true")) { //helpFiftyFifty
                     gameTable.setHelpFiftyFiftyUsed();
+                    btn_Help1.setEnabled(false);
+                    //TODO btn_Help3.setBackgroundResource(R.drawable.-----used);
                 }
-                if (cGame.getInt(9) == 1) { //helpPhone
+                if (cGame.getString(9).equals("true")) { //helpPhone
                     gameTable.setHelpPhoneUsed();
+                    btn_Help2.setEnabled(false);
+                    //TODO btn_Help3.setBackgroundResource(R.drawable.-----used);
                 }
-                if (cGame.getInt(10) == 1) { //helpPublic
+                if (cGame.getString(10).equals("true")) { //helpPublic
                     gameTable.setHelpPublicUsed();
+                    btn_Help3.setEnabled(false);
+                    //TODO btn_Help3.setBackgroundResource(R.drawable.-----used);
                 }
-                if (cGame.getInt(11) == 1) { //helpChange
+                if (cGame.getString(11).equals("true")) { //helpChange
                     gameTable.setHelpChangeUsed();
+                    btn_Help4.setEnabled(false);
+                    //TODO btn_Help3.setBackgroundResource(R.drawable.-----used);
                 }
             }
         }
@@ -199,13 +214,17 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         for (int i = 0; i < gameTable.getQuestionsId().size(); i++){
             for (int j = 0; i < mQuiz.size(); i++){
                 if(gameTable.getQuestionsId().get(i) == mQuiz.get(j).getId()){
+                    if (i == gameTable.getQuestionsId().size()-1){
+                        mQuiz.add(0, mQuiz.get(j));
+                    }
                     mQuiz.remove(j);
                 }
+
             }
         }
-
+        
         if (!gameTable.isUnlimited()) {
-            while (mQuiz.size() > 20) {
+            while (mQuiz.size() > (20 - gameTable.getQuestionsId().size())) {
                 mQuiz.remove(mQuiz.size() - 1);
             }
         }
@@ -474,6 +493,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         helpPhoneDialog.show(fm, "fragment_help_phone_dialog");
 
         btn_Help2.setEnabled(false);
+        //TODO btn_Help2.setBackgroundResource(R.drawable.-----used);
 
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -556,6 +576,9 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
+        btn_Help3.setEnabled(false);
+        //TODO btn_Help3.setBackgroundResource(R.drawable.-----used);
+
         String sql = "UPDATE tblGames " +
                 "SET helpPublic = ' " + true + " '" +
                 "WHERE id = " + gameTable.getId() + ";";
@@ -578,6 +601,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
         dbHelper.close();
         db.close();
+
+
+        btn_Help4.setEnabled(false);
+        //TODO btn_Help4.setBackgroundResource(R.drawable.-----used);
     }
 
     @Override
@@ -602,7 +629,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         } else if(view.getId() == R.id.btnHelp4){
             helpChange();
             gameTable.setHelpChangeUsed();
-            btn_Help4.setEnabled(false);
         }
     }
 
