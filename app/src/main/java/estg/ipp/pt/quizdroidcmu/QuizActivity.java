@@ -212,6 +212,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             for (String s : qSplit){
                 gameTable.addQuestionsId(Integer.valueOf(s));
             }
+        }else{
+            gameTable.addQuestionsId(cGame.getInt(5));
         }
 
         String sqlQuestions = "SELECT * FROM tblQuestions LEFT JOIN tblAnswers ON tblQuestions.answerID = tblAnswers.id WHERE tblQuestions.difficultyID = '" + gameTable.getHighScore().getDifficulty().getId() + "'";
