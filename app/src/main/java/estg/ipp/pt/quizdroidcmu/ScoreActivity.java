@@ -73,7 +73,7 @@ public class ScoreActivity extends AppCompatActivity implements View.OnClickList
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String countScoresSql;
-        countScoresSql = "SELECT COUNT(*) FROM tblHighscores WHERE tblHighscores.unlimited=" + score.isUnlimited();
+        countScoresSql = "SELECT COUNT(*) FROM tblHighscores WHERE tblHighscores.unlimited= '" + score.isUnlimited() + "'";
 
         Cursor c = db.rawQuery(countScoresSql, null);
         if(c != null) {
@@ -98,7 +98,7 @@ public class ScoreActivity extends AppCompatActivity implements View.OnClickList
             }
         }
 
-        String deleteSavedGameSql = "DELETE FROM tblGames WHERE tblGames.id='" + savedGameID;
+        String deleteSavedGameSql = "DELETE FROM tblGames WHERE tblGames.id='" + savedGameID + "'";
         db.execSQL(deleteSavedGameSql);
 
         String insertSql = "INSERT INTO tblHighscores(playerName, difficultyID, correctAnswers, score, unlimited)" +
