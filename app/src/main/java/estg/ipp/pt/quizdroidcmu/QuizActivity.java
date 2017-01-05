@@ -273,14 +273,14 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
             String sql = "UPDATE tblGames SET score = '" + gameTable.getHighScore().getScore() +
                     "', correctAnswers = '" + gameTable.getHighScore().getCorrectAnswers() +
-                    "' WHERE id = " + gameTable.getId() + ";";
+                    "' WHERE tblGames.id = '" + gameTable.getId() + "'";
             db.execSQL(sql);
 
         }else{
-            if (gameTable.isUnlimited()){
+            //Dialog wrong answer
+            if (gameTable.isUnlimited()) {
                 //TODO END GAME
             }
-            //Dialog wrong answer
         }
 
         gameTable.addQuestionsId(randQuestion.getId());
@@ -605,5 +605,16 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             gameTable.setHelpChangeUsed();
             btn_Help4.setEnabled(false);
         }
+    }
+
+    public void onBackPressed() {
+        FragmentManager fm = getFragmentManager();
+        HelpPublicDialogFragment helpPublicDialog = new HelpPublicDialogFragment();
+        helpPublicDialog.setCancelable(false);
+        //helpPublicDialog.setAnswers(answers, progress);
+        helpPublicDialog.show(fm, "fragment_help_phone_dialog");
+
+        finish();
+        super.onBackPressed();
     }
 }
