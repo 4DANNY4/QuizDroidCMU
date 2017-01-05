@@ -1,6 +1,7 @@
 package estg.ipp.pt.quizdroidcmu;
 
 import android.app.*;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +44,7 @@ public class ListContinueActivity extends android.app.ListActivity implements Vi
                 String sqlDiff = "SELECT * FROM tblDifficulties WHERE tblDifficulties.id = '" + cGame.getInt(2) + "'";
                 Cursor cDiff = db.rawQuery(sqlDiff, null);
                 Game savedGame = new Game();
+                savedGame.setId(cGame.getInt(0));
                 if (cDiff != null && cDiff.moveToFirst()) {
                     difficulty = new Difficulty(cDiff.getInt(0), cDiff.getString(1), cDiff.getString(2));
                 }
@@ -78,5 +80,14 @@ public class ListContinueActivity extends android.app.ListActivity implements Vi
     @Override
     public void onClick(View v) {
 
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Intent newIntent = new Intent(this, QuizActivity.class);
+        newIntent.putExtra("isContinue", true);
+        newIntent.putExtra("GameTableId", gList.get(position).getId());
+        startActivity(newIntent);
     }
 }
