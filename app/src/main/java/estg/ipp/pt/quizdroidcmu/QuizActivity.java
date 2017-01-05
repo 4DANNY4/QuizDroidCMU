@@ -167,8 +167,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             }
             if (cGame.getString(6).equals("false")) { //unlimited
                 gameTable.setHighScore(new Highscore(0, cGame.getString(1), difficulty, cGame.getInt(3), cGame.getInt(4), false));
+                gameTable.setUnlimited(false);
             } else{
                 gameTable.setHighScore(new Highscore(0, cGame.getString(1), difficulty, cGame.getInt(3), cGame.getInt(4), true));
+                gameTable.setUnlimited(true);
             }
             if (cGame.getString(7).equals("true")) { //helpsDisabled
                 gameTable.setHelpsDisabled(true);
