@@ -131,8 +131,20 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             helpChange = mQuiz.get(mQuiz.size());
         }else{
             btn_Help4.setBackgroundResource(R.drawable.ic_50used); //TODO
-            // change
+            //TODO btn_Help3.setBackgroundResource(R.drawable.-----used);
+            gameTable.setHelpChangeUsed();
             btn_Help4.setEnabled(false);
+
+            QdDbHelper dbHelper = new QdDbHelper(this);
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+            String sql = "UPDATE tblGames " +
+                    "SET helpChange = ' " + true + " '" +
+                    "WHERE id = " + gameTable.getId() + ";";
+            db.execSQL(sql);
+
+            dbHelper.close();
+            db.close();
         }
         while (mQuiz.size() > 20) {
             mQuiz.remove(mQuiz.size() - 1);
@@ -165,10 +177,11 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 btn_Help3.setVisibility(View.GONE);
                 btn_Help4.setVisibility(View.GONE);
             } else {
+                gameTable.setHelpsDisabled(false);
                 if (cGame.getString(8).equals("true")) { //helpFiftyFifty
                     gameTable.setHelpFiftyFiftyUsed();
                     btn_Help1.setEnabled(false);
-                    //TODO btn_Help3.setBackgroundResource(R.drawable.-----used);
+                    btn_Help1.setBackgroundResource(R.drawable.ic_50used);
                 }
                 if (cGame.getString(9).equals("true")) { //helpPhone
                     gameTable.setHelpPhoneUsed();
@@ -183,7 +196,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 if (cGame.getString(11).equals("true")) { //helpChange
                     gameTable.setHelpChangeUsed();
                     btn_Help4.setEnabled(false);
-                    //TODO btn_Help3.setBackgroundResource(R.drawable.-----used);
+                    //TODO btn_Help4.setBackgroundResource(R.drawable.-----used);
                 }
             }
         }
@@ -194,7 +207,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             gameTable.addQuestionsId(Integer.valueOf(s));
         }
 
-        String sqlQuestions = "SELECT * FROM tblQuestions LEFT JOIN tblAnswers ON tblQuestions.answerID = tblAnswers.id WHERE tblQuestions.difficultyID = '" + gameTable.getHighScore().getDifficulty()  + "'";
+        String sqlQuestions = "SELECT * FROM tblQuestions LEFT JOIN tblAnswers ON tblQuestions.answerID = tblAnswers.id WHERE tblQuestions.difficultyID = '" + gameTable.getHighScore().getDifficulty().getId() + "'";
         Cursor cQuestions = db.rawQuery(sqlQuestions,null);
         if (cQuestions != null && cQuestions.moveToFirst()){
             do {
@@ -210,7 +223,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
 
         for (int i = 0; i < gameTable.getQuestionsId().size(); i++){
-            for (int j = 0; i < mQuiz.size(); i++){
+            for (int j = 0; j < mQuiz.size(); j++){
                 if(gameTable.getQuestionsId().get(i) == mQuiz.get(j).getId()){
                     if (i == gameTable.getQuestionsId().size()-1){
                         mQuiz.add(0, mQuiz.get(j));
@@ -287,7 +300,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             newIntent.putExtra("ScoreDifficultyName", gameTable.getHighScore().getDifficulty().getName());
             newIntent.putExtra("ScoreCorrectAnswers", gameTable.getHighScore().getCorrectAnswers());
             newIntent.putExtra("Score", gameTable.getHighScore().getScore());
-            newIntent.putExtra("Unlimited", gameTable.getHighScore().isUnlimited());
+            newIntent.putExtra("Unlimited", gameTable.isUnlimited());
             newIntent.putExtra("SavedGameID", gameTable.getId());
             startActivity(newIntent);
             finish();
@@ -329,7 +342,16 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }else{
             //Dialog wrong answer
             if (gameTable.isUnlimited()) {
-                //TODO END GAME
+                Intent newIntent = new Intent(this, ScoreActivity.class);
+                newIntent.putExtra("ScorePlayerName", gameTable.getHighScore().getPlayerName());
+                newIntent.putExtra("ScoreDifficultyID", gameTable.getHighScore().getDifficulty().getId());
+                newIntent.putExtra("ScoreDifficultyName", gameTable.getHighScore().getDifficulty().getName());
+                newIntent.putExtra("ScoreCorrectAnswers", gameTable.getHighScore().getCorrectAnswers());
+                newIntent.putExtra("Score", gameTable.getHighScore().getScore());
+                newIntent.putExtra("Unlimited", gameTable.isUnlimited());
+                newIntent.putExtra("SavedGameID", gameTable.getId());
+                startActivity(newIntent);
+                finish();
             }
         }
 
@@ -388,7 +410,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String sql = "UPDATE tblGames " +
-                "SET helpFiftyFifty = ' " + true + " '" +
+                "SET helpFiftyFifty = '" + true + "'" +
                 "WHERE id = " + gameTable.getId() + ";";
         db.execSQL(sql);
 
@@ -516,7 +538,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String sql = "UPDATE tblGames " +
-                "SET helpPhone = ' " + true + " '" +
+                "SET helpPhone = '" + true + "'" +
                 "WHERE id = " + gameTable.getId() + ";";
         db.execSQL(sql);
 
@@ -597,7 +619,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         //TODO btn_Help3.setBackgroundResource(R.drawable.-----used);
 
         String sql = "UPDATE tblGames " +
-                "SET helpPublic = ' " + true + " '" +
+                "SET helpPublic = '" + true + "'" +
                 "WHERE id = " + gameTable.getId() + ";";
         db.execSQL(sql);
 
@@ -612,7 +634,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String sql = "UPDATE tblGames " +
-                "SET helpChange = ' " + true + " '" +
+                "SET helpChange = '" + true + "'" +
                 "WHERE id = " + gameTable.getId() + ";";
         db.execSQL(sql);
 
