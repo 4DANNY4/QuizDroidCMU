@@ -78,7 +78,7 @@ public class Game {
         this.helpChange = true;
     }
 
-    public boolean getUnlimited() { return unlimited; }
+    public boolean isUnlimited() { return unlimited; }
 
     public void setUnlimited(boolean unlimited) {
         this.unlimited = unlimited;
