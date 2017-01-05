@@ -69,7 +69,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             );
             SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(this);
             gameTable = new Game(0, new Highscore(0, "", difficulty, 0, 0, false),
-                    mSettings.getBoolean("unlimited", false), mSettings.getBoolean("helpsDisabled", false));
+                    mSettings.getBoolean("pref_unlimited", false), mSettings.getBoolean("pref_helpsDisabled", false));
 
             final AlertDialog.Builder playerNameDialog = new AlertDialog.Builder(this);
             final EditText input = new EditText(this);
@@ -80,6 +80,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             playerNameDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     gameTable.getHighScore().setPlayerName(input.getText().toString().trim());
+                    setGameTable();
                     Toast.makeText(getApplicationContext(), "Player: " + gameTable.getHighScore().getPlayerName(),
                             Toast.LENGTH_SHORT).show();
                 }
@@ -94,7 +95,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         nextQuestion();
-        setGameTable();
 
         if(gameTable.isHelpsDisabled()){
             btn_Help1.setVisibility(View.GONE);
@@ -230,7 +230,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             btn_Answer3.setText(randQuestion.getAnswers()[2]);
             btn_Answer4.setText(randQuestion.getAnswers()[3]);
 
-            gameTable.addQuestionsId(mQuiz.get(rand).getId());
             mQuiz.remove(rand);
         }else{
             Intent newIntent = new Intent(this, ScoreActivity.class);
@@ -247,8 +246,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private void setGameTable(){
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String sql = "INSERT INTO tblGames(playerName, difficultyID, correctAnswers, score," +
-                " unlimited, helpsDisabled, helpFiftyFifty, helpPhone, helpPublic, helpChange)" +
+
+        String sql = "INSERT INTO tblGames(playerName, difficultyID, correctAnswers, score, unlimited, helpsDisabled, helpFiftyFifty, helpPhone, helpPublic, helpChange)" +
                 " VALUES('" + gameTable.getHighScore().getPlayerName() + "', '" + difficulty.getId() + "', '0', '0'" +
                 ", '" + gameTable.isUnlimited() + "', '" + gameTable.isHelpsDisabled() + "'" +
                 ", '" + gameTable.isHelpFiftyFifty() + "', '" + gameTable.isHelpPhone() + "', '" + gameTable.isHelpPublic() + "', '" + gameTable.isHelpChange() + "')";
@@ -285,16 +284,16 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
         gameTable.addQuestionsId(randQuestion.getId());
         String questions = "";
-        for(Integer i : gameTable.getQuestionsId()){
-            if (questions.equals("")){
-                questions = String.valueOf(i);
+        for(Integer id : gameTable.getQuestionsId()){
+            if (questions.equals("")) {
+                questions = String.valueOf(id);
             }else {
-                questions += ";" + i;
+                questions += ";" + id;
             }
         }
 
         String sql = "UPDATE tblGames " +
-                "SET questions = ' " + questions + " '" +
+                "SET questions = '" + questions + "'" +
                 "WHERE id = " + gameTable.getId() + ";";
         db.execSQL(sql);
 
@@ -607,14 +606,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void onBackPressed() {
-        FragmentManager fm = getFragmentManager();
-        HelpPublicDialogFragment helpPublicDialog = new HelpPublicDialogFragment();
-        helpPublicDialog.setCancelable(false);
-        //helpPublicDialog.setAnswers(answers, progress);
-        helpPublicDialog.show(fm, "fragment_help_phone_dialog");
+    private void updateName() {}
 
-        finish();
-        super.onBackPressed();
-    }
 }

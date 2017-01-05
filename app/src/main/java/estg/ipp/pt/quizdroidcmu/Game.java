@@ -9,6 +9,8 @@ public class Game {
     private boolean helpFiftyFifty, helpPhone, helpPublic, helpChange;
     private boolean helpsDisabled, unlimited;
 
+    public Game() { }
+
     public Game(int id, Highscore highScore, boolean unlimited, boolean helpsDisabled) {
         this.id = id;
         this.highScore = highScore;

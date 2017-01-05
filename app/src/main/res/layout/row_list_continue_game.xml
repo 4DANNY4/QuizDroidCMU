@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent" android:layout_marginTop="10dp"
+    android:layout_height="wrap_content" android:background="@color/dividerText" android:padding="5sp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txt_continue_playerName"
+            android:text="Player1"
+            android:textSize="20sp"
+            android:textStyle="bold|italic"
+            android:textColor="#263238"
+            android:paddingStart="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/txt_continue_gametype"
+            android:text="Normal"
+            android:textSize="16sp"
+            android:textColor="#263238"
+            android:paddingStart="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/txt_continue_difficulty"
+            android:text="Medium"
+            android:textSize="16sp"
+            android:textColor="#263238"
+            android:paddingStart="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txt_continue_score"
+            android:text="13500"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="#d84315"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/txt_continue_answers"
+            android:text="13"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="#d84315"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -57,10 +57,11 @@ public class TopHighscoresAnswer extends ListFragment {
         if(c != null && c.moveToFirst()) {
             do {
                 dif = new Difficulty(c.getInt(0), c.getString(1), c.getString(2));
-                String sql = "SELECT *, MAX(score) AS score FROM tblHighscores WHERE tblHighscores.difficultyID='" + dif.getId() + "'";
+                String sql = "SELECT *, MAX(score) AS score FROM tblHighscores WHERE tblHighscores.difficultyID='" + dif.getId() +
+                        "' AND tblHighscores.unlimited='1'";
                 Cursor c2 = db.rawQuery(sql, null);
                 if(c2 != null && c2.moveToFirst()) {
-                    hList.add(new Highscore(c2.getInt(0), c2.getString(1), dif, c2.getInt(3), c2.getInt(4)));
+                    hList.add(new Highscore(c2.getInt(0), c2.getString(1), dif, c2.getInt(3), c2.getInt(4), true));
                 }
             } while(c.moveToNext());
         }

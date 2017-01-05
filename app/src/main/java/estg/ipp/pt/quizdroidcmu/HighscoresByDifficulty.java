@@ -126,11 +126,12 @@ public class HighscoresByDifficulty extends ListFragment implements View.OnClick
 
         hList.clear();
 
-        String sql = "SELECT * FROM tblHighscores WHERE tblHighscores.difficultyID='" + difficulty.getId() + "' ORDER BY tblHighscores.score DESC";
+        String sql = "SELECT * FROM tblHighscores WHERE tblHighscores.difficultyID='" + difficulty.getId() + "'" +
+                " AND tblHighscores.unlimited='0' ORDER BY tblHighscores.score DESC";
         Cursor c = db.rawQuery(sql, null);
         if(c != null && c.moveToFirst()) {
             do {
-            hList.add(new Highscore(c.getInt(0), c.getString(1), difficulty, c.getInt(3), c.getInt(4)));
+            hList.add(new Highscore(c.getInt(0), c.getString(1), difficulty, c.getInt(3), c.getInt(4), false));
             } while(c.moveToNext());
         }
 

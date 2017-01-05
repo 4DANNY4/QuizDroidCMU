@@ -21,9 +21,9 @@
         <activity android:name=".ListActivity" />
         <activity android:name=".AddEditQuestion" />
         <activity android:name=".AddEditDifficulty" />
-        <activity android:name=".GameContainer" />
         <activity android:name=".ScoreActivity" />
         <activity android:name=".HighscoreContainer" />
+        <activity android:name=".ListContinueActivity"></activity>
     </application>
 
 </manifest>

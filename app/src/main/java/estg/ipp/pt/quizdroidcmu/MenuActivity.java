@@ -1,7 +1,6 @@
 package estg.ipp.pt.quizdroidcmu;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -13,14 +12,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import layout.QuizFragment;
-
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ArrayList<Difficulty> difList = new ArrayList<>();
 
     private LinearLayout btn_StartGame;
-    private Button btn_NextDifficulty, btn_PreviousDifficulty, btn_Settings, btn_Highscores;
+    private Button btn_NextDifficulty, btn_PreviousDifficulty, btn_Settings, btn_Highscores, btn_Continue;
     private TextView txt_highestScore, txt_answerStreak, txt_diff;
     private Difficulty difficulty;
 
@@ -37,6 +34,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         btn_StartGame = (LinearLayout) findViewById(R.id.btnStartGame);
         btn_StartGame.setOnClickListener(this);
+
+        btn_Continue = (Button) findViewById(R.id.btnContinueGame);
+        btn_Continue.setOnClickListener(this);
 
         txt_diff = (TextView) findViewById(R.id.txt_diff);
 
@@ -118,7 +118,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             newIntent.putExtra("DifficultyID", difficulty.getId());
             newIntent.putExtra("DifficultyName", difficulty.getName());
             newIntent.putExtra("DifficultyDescription", difficulty.getDescription());
-            newIntent.putExtra("TypeGame", "20 Quest");
+            newIntent.putExtra("isContinue", false);
+            startActivity(newIntent);
+        } else if(view.getId() == R.id.btnContinueGame) {
+            Intent newIntent = new Intent(this, ListContinueActivity.class);
             startActivity(newIntent);
         } else if(view.getId() == R.id.btnHighscores) {
             Intent newIntent = new Intent(this, HighscoreContainer.class);
