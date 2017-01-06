@@ -85,7 +85,7 @@ public class HelpPhoneDialogFragment extends DialogFragment{
                 dismiss();
             }
         });
-        getDialog().setTitle("Phone Help");
+        //getDialog().setTitle("Phone Help");
 
         return view;
     }

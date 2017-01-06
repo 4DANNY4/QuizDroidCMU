@@ -56,7 +56,7 @@ public class HelpPublicDialogFragment extends DialogFragment {
             }
         });
 
-        getDialog().setTitle("Public Help");
+        //getDialog().setTitle("Public Help");
 
         for (int i = 0; i < answers.length; i++){
             //String[] splitAnswer = answers[i].split("\\s+");
