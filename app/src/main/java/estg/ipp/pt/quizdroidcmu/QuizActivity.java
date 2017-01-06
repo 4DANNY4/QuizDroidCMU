@@ -19,7 +19,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-import java.util.StringTokenizer;
 
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -71,7 +70,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(this);
             gameTable = new Game(0, new Highscore(0, "", difficulty, 0, 0, false),
                     mSettings.getBoolean("pref_unlimited", false), mSettings.getBoolean("pref_helpsDisabled", false));
-
+            setIdGameTable();
             final AlertDialog.Builder playerNameDialog = new AlertDialog.Builder(this);
             final EditText input = new EditText(this);
             final String txt = "Player Name:";
@@ -97,8 +96,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             txt_gameScore.setText(String.valueOf(0));
             nextQuestion();
         }
-
-
 
         if(gameTable.isHelpsDisabled()){
             btn_Help1.setVisibility(View.GONE);
@@ -299,9 +296,9 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
 
-            String sql = "UPDATE tblGames " +
-                    "SET questions = '" + questions + "'" +
-                    "WHERE id = " + gameTable.getId() + ";";
+            String sql = "UPDATE tblGames" +
+                    " SET questions = '" + questions + "'" +
+                    " WHERE id = " + gameTable.getId() + ";";
             db.execSQL(sql);
 
             dbHelper.close();
@@ -322,20 +319,41 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void setGameTable(){
+    private void setIdGameTable(){ //TODO ver isto.. do id
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String sql = "INSERT INTO tblGames(playerName, difficultyID, correctAnswers, score, unlimited, helpsDisabled, helpFiftyFifty, helpPhone, helpPublic, helpChange)" +
-                " VALUES('" + gameTable.getHighScore().getPlayerName() + "', '" + difficulty.getId() + "', '0', '0'" +
-                ", '" + gameTable.isUnlimited() + "', '" + gameTable.isHelpsDisabled() + "'" +
-                ", '" + gameTable.isHelpFiftyFifty() + "', '" + gameTable.isHelpPhone() + "', '" + gameTable.isHelpPublic() + "', '" + gameTable.isHelpChange() + "')";
+                " VALUES('NOVO', '1', '0', '0', 'false', 'false', 'false', 'false', 'false', 'false')";
         db.execSQL(sql);
 
-        sql = "SELECT id FROM tblGames";
+        sql = "SELECT id FROM tblGames ORDER BY tblGames.id DESC LIMIT 1";
         Cursor c = db.rawQuery(sql,null);
-        c.moveToLast();
+
+        c.moveToFirst();
         gameTable.setId(c.getInt(0));
+
+        dbHelper.close();
+        db.close();
+    }
+
+    private void setGameTable(){
+        QdDbHelper dbHelper = new QdDbHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String sql = "UPDATE tblGames SET" +
+                " playerName = '" + gameTable.getHighScore().getPlayerName() + "'" +
+                ", difficultyID = '" + difficulty.getId() + "'" +
+                ", correctAnswers = '" + 0 + "'" +
+                ", score = '" + 0 + "'" +
+                ", unlimited = '" + gameTable.isUnlimited() + "'" +
+                ", helpsDisabled = '" + gameTable.isHelpsDisabled() + "'" +
+                ", helpFiftyFifty = '" + gameTable.isHelpFiftyFifty() + "'" +
+                ", helpPhone = '" + gameTable.isHelpPhone() + "'" +
+                ", helpPublic = '" + gameTable.isHelpPublic() + "'" +
+                ", helpChange = '" + gameTable.isHelpChange() + "'" +
+                " WHERE tblGames.id = '" + gameTable.getId() + "'";
+        db.execSQL(sql);
 
         dbHelper.close();
         db.close();
