@@ -619,8 +619,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }
         arrayRand.add(100 - sum);
 
-        System.out.println(arrayRand.toString());
-        System.out.println(rand);
+        //System.out.println(arrayRand.toString());
+        //System.out.println(rand);
 
         if(rand <= 5 || rand >= 95){
             int firstTop, secondTop;
@@ -659,9 +659,9 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
         FragmentManager fm = getFragmentManager();
         HelpPublicDialogFragment helpPublicDialog = new HelpPublicDialogFragment();
-        helpPublicDialog.setCancelable(false);
         helpPublicDialog.setAnswers(answers, progress);
-        helpPublicDialog.show(fm, "fragment_help_phone_dialog");
+        helpPublicDialog.setCancelable(false);
+        helpPublicDialog.show(fm, "fragment_help_public_dialog");
 
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();

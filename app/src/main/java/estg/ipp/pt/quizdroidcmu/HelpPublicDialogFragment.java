@@ -22,7 +22,7 @@ public class HelpPublicDialogFragment extends DialogFragment {
     TextView txt_1DialogProgress, txt_2DialogProgress, txt_3DialogProgress, txt_4DialogProgress;
     Button btn_EndDialog;
 
-    private String[] answers;
+    private String[] answers = new String[]{};
     int[] progress;
 
     public HelpPublicDialogFragment() {
@@ -57,6 +57,10 @@ public class HelpPublicDialogFragment extends DialogFragment {
         });
 
         //getDialog().setTitle("Public Help");
+
+        while (answers.length == 0){
+            System.out.println("SEM ANSWERS");
+        }
 
         for (int i = 0; i < answers.length; i++){
             //String[] splitAnswer = answers[i].split("\\s+");
