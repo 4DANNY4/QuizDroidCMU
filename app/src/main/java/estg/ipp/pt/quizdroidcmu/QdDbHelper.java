@@ -61,7 +61,6 @@ public class QdDbHelper extends SQLiteOpenHelper {
         //Inserts
         db.execSQL("INSERT INTO tblDifficulties(name, description) VALUES('Easy','For casual beginners.')");
         db.execSQL("INSERT INTO tblDifficulties(name, description) VALUES('Medium','For a more challenging experience.')");
-        db.execSQL("INSERT INTO tblDifficulties(name, description) VALUES('Hard','For the ultimate challenge!')");
 
         db.execSQL("INSERT INTO tblAnswers(answers1, answers2, answers3, answers4)" +
                 " VALUES('4','2','3','1')");

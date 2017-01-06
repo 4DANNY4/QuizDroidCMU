@@ -10,6 +10,8 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -73,13 +75,23 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             setIdGameTable();
             final AlertDialog.Builder playerNameDialog = new AlertDialog.Builder(this);
             final EditText input = new EditText(this);
+            input.setSingleLine();
+            input.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+            InputFilter[] f = new InputFilter[1];
+            f[0] = new InputFilter.LengthFilter(10);
+            input.setFilters(f);
             final String txt = "Player Name:";
             playerNameDialog.setCancelable(false);
             playerNameDialog.setTitle(txt);
             playerNameDialog.setView(input);
             playerNameDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-                    gameTable.getHighScore().setPlayerName(input.getText().toString().trim());
+                    String tmpName = input.getText().toString().trim();
+                    if(!tmpName.equals("")) {
+                        gameTable.getHighScore().setPlayerName(tmpName);
+                    } else {
+                        gameTable.getHighScore().setPlayerName("Guest");
+                    }
                     setGameTable();
                     Toast.makeText(getApplicationContext(), "Player: " + gameTable.getHighScore().getPlayerName(),
                             Toast.LENGTH_SHORT).show();

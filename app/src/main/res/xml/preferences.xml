@@ -11,7 +11,5 @@
             android:title="Manage Questions"/>
         <Preference android:key="pref_key_manageDifficulties"
             android:title="Manage Difficulties"/>
-        <Preference android:key="pref_key_manageCategories"
-            android:title="Manage Categories"/>
     </PreferenceCategory>
 </PreferenceScreen>
