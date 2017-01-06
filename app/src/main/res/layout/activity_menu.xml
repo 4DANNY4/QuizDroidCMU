@@ -117,7 +117,7 @@
     </LinearLayout>
 
     <TextView
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/menuHighestScore"
@@ -125,10 +125,19 @@
         android:gravity="center"
         android:textColor="@android:color/black"
         android:textStyle="bold"/>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/menuNormal"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/txtHighestScore"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:minWidth="200dp"
         android:maxLines="1"
         android:layout_width="wrap_content"
@@ -141,18 +150,18 @@
         android:background="@drawable/boxshape"/>
 
     <TextView
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/menuAnswerStreak"
-        android:textSize="25sp"
+        android:text="@string/menuUnlimited"
+        android:textSize="20sp"
         android:gravity="center"
         android:textColor="@android:color/black"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/txtAnswerStreak"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:minWidth="200dp"
         android:maxLines="1"
         android:layout_width="wrap_content"

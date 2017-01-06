@@ -9,6 +9,8 @@
     <!-- layout/activity_menu.xml -->
     <string name="menuHighestScore">Highest Score</string>
     <string name="menuAnswerStreak">Answer Streak</string>
+    <string name="menuNormal">Normal</string>
+    <string name="menuUnlimited">Unlimited</string>
 
     <!-- xml/preference.xml -->
     <string name="preferenceDificulty">Dificulty</string>
