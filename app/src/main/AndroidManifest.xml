@@ -34,6 +34,10 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/quiz_widget_info" />
         </receiver>
+        <service android:name=".QuizService"
+            android:process=":MyQuizService">
+
+        </service>
     </application>
 
 </manifest>
