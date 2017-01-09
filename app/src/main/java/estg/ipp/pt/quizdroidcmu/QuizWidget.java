@@ -25,36 +25,8 @@ public class QuizWidget extends AppWidgetProvider {
     public static String BTN_ANSWER3_WIDGET = "BtnAnswer3Widget";
     public static String BTN_ANSWER4_WIDGET = "BtnAnswer4Widget";
 
-    private void initData(Context context, int questID){
-        System.out.println("initData");
-        ArrayList<Question> mQuiz = new ArrayList<>();
-
-        QdDbHelper dbHelper = new QdDbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String sql = "SELECT * FROM tblQuestions LEFT JOIN tblAnswers ON tblQuestions.answerID = tblAnswers.id WHERE tblQuestions.difficultyID = '" + difficulty.getId()  + "'";
-        Cursor c = db.rawQuery(sql,null);
-        if (c != null && c.moveToFirst()){
-            do {
-                String[] answers = {c.getString(7),c.getString(8),c.getString(9),c.getString(10)};
-                mQuiz.add(new Question(c.getInt(0),c.getString(3),difficulty, answers, c.getInt(4), c.getInt(5)));
-            }while (c.moveToNext());
-        }
-        dbHelper.close();
-        db.close();
-
-        Collections.shuffle(mQuiz);
-        for (Question q : mQuiz){
-            if (q.getId() != questID){
-                question = q;
-                break;
-            }
-        }
-
-        //TODO Widget sem questoes
-    }
-
     private void getQuestion(Context context, int id){
-        System.out.println("getQuestion");
+        System.out.println("QuizWidget -> getQuestion");
         QdDbHelper dbHelper = new QdDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String sql = "SELECT * FROM tblQuestions LEFT JOIN tblAnswers ON tblQuestions.answerID = tblAnswers.id WHERE tblQuestions.id = '" + id  + "'";
@@ -69,8 +41,15 @@ public class QuizWidget extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        System.out.println("onReceive");
-        getQuestion(context, intent.getIntExtra("QuestionID", 0));
+        System.out.println("QuizWidget -> onReceive");
+        //getQuestion(context, intent.getIntExtra("QuestionID", 0));
+        question.setText(intent.getStringExtra("QuizQuestion"));
+        String[] answers = {intent.getStringExtra("QuizAnswers1"),
+                intent.getStringExtra("QuizAnswers2"),
+                intent.getStringExtra("QuizAnswers3"),
+                intent.getStringExtra("QuizAnswers4")};
+        question.setAnswers(answers);
+
         score = intent.getIntExtra("QuestionScore", 0);
         if (intent.getAction().equals(BTN_ANSWER1_WIDGET)) {
             if(question.getCorrectAnswer() == 1){
@@ -99,10 +78,22 @@ public class QuizWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        System.out.println("onUpdate");
+        System.out.println("QuizWidget -> onUpdate");
+
+        final int N = appWidgetIds.length;
+        for (int i = 0; i < N; i++) {
+            int appWidgetId = appWidgetIds[i];
+            updateAppWidget(context, appWidgetManager, appWidgetId);
+        }
+
+    }
+
+    private void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+        System.out.println("QuizWidget -> updateAppWidget");
+
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.quiz_widget);
 
-        initData(context, question.getId());
+        //initData(context, question.getId());
 
         remoteViews.setTextViewText(R.id.txtScoreWidget, String.valueOf(score));
         remoteViews.setTextViewText(R.id.txtQuestionWidget, question.getText());
@@ -134,7 +125,7 @@ public class QuizWidget extends AppWidgetProvider {
         intent.putExtra("QuestionID", question.getId());
         intent.putExtra("QuestionScore", score);
 
-        appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
+        appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
     }
 }
 
