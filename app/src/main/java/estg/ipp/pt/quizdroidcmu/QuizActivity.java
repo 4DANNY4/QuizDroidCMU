@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.TransitionDrawable;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,10 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -97,7 +102,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                             Toast.LENGTH_SHORT).show();
                 }
             });
-            playerNameDialog.show();
+            playerNameDialog.show().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
             if(gameTable.isUnlimited()){
                 initDataUnlimited();
@@ -253,7 +258,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         }
-        
+
         if (!gameTable.isUnlimited()) {
             while (mQuiz.size() > (20 - gameTable.getQuestionsId().size())) {
                 mQuiz.remove(mQuiz.size() - 1);
@@ -281,6 +286,12 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void nextQuestion(){  //TODO para ver
+        //Restoring button colors
+        btn_Answer1.setBackgroundResource(R.drawable.box2shapewhite);
+        btn_Answer2.setBackgroundResource(R.drawable.box2shapewhite);
+        btn_Answer3.setBackgroundResource(R.drawable.box2shapewhite);
+        btn_Answer4.setBackgroundResource(R.drawable.box2shapewhite);
+
         if(mQuiz.size() != 0) {
             int min = 1;
             int max = mQuiz.size();
@@ -371,49 +382,87 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         db.close();
     }
 
-    private void setScores(int correctAnswer){
-        QdDbHelper dbHelper = new QdDbHelper(this);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        if(randQuestion.getCorrectAnswer() == correctAnswer){
-            //Dialog correct answer
-            gameTable.getHighScore().setScore(gameTable.getHighScore().getScore()+randQuestion.getReward());
-            gameTable.getHighScore().setCorrectAnswers(gameTable.getHighScore().getCorrectAnswers()+1);
+    private void setScores(final int answer){
+        final QdDbHelper dbHelper = new QdDbHelper(this);
+        final SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-            if(gameTable.isUnlimited()) {
-                txt_gameScore.setText(String.valueOf(gameTable.getHighScore().getCorrectAnswers()));
-            }else{
-                txt_gameScore.setText(String.valueOf(gameTable.getHighScore().getScore()));
+        Animation anim = new AlphaAnimation(0.5f, 1);
+        anim.setDuration(1500);
+        anim.setInterpolator(new LinearInterpolator());
+        anim.setRepeatCount(0);
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setAnimationListener(new Animation.AnimationListener(){
+            public void onAnimationStart(Animation anim) { }
+            public void onAnimationRepeat(Animation anim) { }
+            @Override
+            public void onAnimationEnd(Animation anim) {
+                if(randQuestion.getCorrectAnswer() == answer){
+                    gameTable.getHighScore().setScore(gameTable.getHighScore().getScore()+randQuestion.getReward());
+                    gameTable.getHighScore().setCorrectAnswers(gameTable.getHighScore().getCorrectAnswers()+1);
+
+                    if(gameTable.isUnlimited()) {
+                        txt_gameScore.setText(String.valueOf(gameTable.getHighScore().getCorrectAnswers()));
+                    }else{
+                        txt_gameScore.setText(String.valueOf(gameTable.getHighScore().getScore()));
+                    }
+                    String sql = "UPDATE tblGames SET score = '" + gameTable.getHighScore().getScore() +
+                            "', correctAnswers = '" + gameTable.getHighScore().getCorrectAnswers() +
+                            "' WHERE tblGames.id = '" + gameTable.getId() + "'";
+                    db.execSQL(sql);
+                } else {
+                    if (gameTable.isUnlimited()) {
+                        Intent newIntent = new Intent(getBaseContext(), ScoreActivity.class);
+                        newIntent.putExtra("ScorePlayerName", gameTable.getHighScore().getPlayerName());
+                        newIntent.putExtra("ScoreDifficultyID", gameTable.getHighScore().getDifficulty().getId());
+                        newIntent.putExtra("ScoreDifficultyName", gameTable.getHighScore().getDifficulty().getName());
+                        newIntent.putExtra("ScoreCorrectAnswers", gameTable.getHighScore().getCorrectAnswers());
+                        newIntent.putExtra("Score", gameTable.getHighScore().getScore());
+                        newIntent.putExtra("Unlimited", gameTable.isUnlimited());
+                        newIntent.putExtra("SavedGameID", gameTable.getId());
+                        startActivity(newIntent);
+                        finish();
+                    }
+                }
+                dbHelper.close();
+                db.close();
+
+                btn_Answer1.setVisibility(View.VISIBLE);
+                btn_Answer2.setVisibility(View.VISIBLE);
+                btn_Answer3.setVisibility(View.VISIBLE);
+                btn_Answer4.setVisibility(View.VISIBLE);
+                nextQuestion();
             }
+        });
 
-            String sql = "UPDATE tblGames SET score = '" + gameTable.getHighScore().getScore() +
-                    "', correctAnswers = '" + gameTable.getHighScore().getCorrectAnswers() +
-                    "' WHERE tblGames.id = '" + gameTable.getId() + "'";
-            db.execSQL(sql);
-
+        if(randQuestion.getCorrectAnswer() == answer){
+            if(answer == 1) {
+                btn_Answer1.setBackgroundResource(R.drawable.box2shapegreen);
+                btn_Answer1.startAnimation(anim);
+            } else if(answer == 2) {
+                btn_Answer2.setBackgroundResource(R.drawable.box2shapegreen);
+                btn_Answer2.startAnimation(anim);
+            } else if(answer == 3 ) {
+                btn_Answer3.setBackgroundResource(R.drawable.box2shapegreen);
+                btn_Answer3.startAnimation(anim);
+            } else {
+                btn_Answer4.setBackgroundResource(R.drawable.box2shapegreen);
+                btn_Answer4.startAnimation(anim);
+            }
         }else{
-            //Dialog wrong answer
-            if (gameTable.isUnlimited()) {
-                Intent newIntent = new Intent(this, ScoreActivity.class);
-                newIntent.putExtra("ScorePlayerName", gameTable.getHighScore().getPlayerName());
-                newIntent.putExtra("ScoreDifficultyID", gameTable.getHighScore().getDifficulty().getId());
-                newIntent.putExtra("ScoreDifficultyName", gameTable.getHighScore().getDifficulty().getName());
-                newIntent.putExtra("ScoreCorrectAnswers", gameTable.getHighScore().getCorrectAnswers());
-                newIntent.putExtra("Score", gameTable.getHighScore().getScore());
-                newIntent.putExtra("Unlimited", gameTable.isUnlimited());
-                newIntent.putExtra("SavedGameID", gameTable.getId());
-                startActivity(newIntent);
-                finish();
+            if(answer == 1) {
+                btn_Answer1.setBackgroundResource(R.drawable.box2shapered);
+                btn_Answer1.startAnimation(anim);
+            } else if(answer == 2) {
+                btn_Answer2.setBackgroundResource(R.drawable.box2shapered);
+                btn_Answer2.startAnimation(anim);
+            } else if(answer == 3 ) {
+                btn_Answer3.setBackgroundResource(R.drawable.box2shapered);
+                btn_Answer3.startAnimation(anim);
+            } else {
+                btn_Answer4.setBackgroundResource(R.drawable.box2shapered);
+                btn_Answer4.startAnimation(anim);
             }
         }
-
-        dbHelper.close();
-        db.close();
-
-        btn_Answer1.setVisibility(View.VISIBLE);
-        btn_Answer2.setVisibility(View.VISIBLE);
-        btn_Answer3.setVisibility(View.VISIBLE);
-        btn_Answer4.setVisibility(View.VISIBLE);
-        nextQuestion();
     }
     private void helpFiftyFifty(){
         int min = 1;
@@ -661,7 +710,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         HelpPublicDialogFragment helpPublicDialog = new HelpPublicDialogFragment();
         helpPublicDialog.setAnswers(answers, progress);
         helpPublicDialog.setCancelable(false);
-        helpPublicDialog.show(fm, "fragment_help_public_dialog");
+        helpPublicDialog.show(fm, "fragment_help_phone_dialog");
 
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -699,14 +748,55 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+        Animation anim = new AlphaAnimation(0.5f, 1);
+        anim.setDuration(600);
+        anim.setInterpolator(new LinearInterpolator());
+        anim.setRepeatCount(2);
+        anim.setRepeatMode(Animation.REVERSE);
         if (view.getId() == R.id.btnAnswer1){
-            setScores(1);
+            btn_Answer1.setBackgroundResource(R.drawable.box2shapeorange);
+            anim.setAnimationListener(new Animation.AnimationListener(){
+                public void onAnimationStart(Animation anim) { }
+                public void onAnimationRepeat(Animation anim) { }
+                @Override
+                public void onAnimationEnd(Animation anim) {
+                    setScores(1);
+                }
+            });
+            btn_Answer1.startAnimation(anim);
         } else if(view.getId() == R.id.btnAnswer2){
-            setScores(2);
+            btn_Answer2.setBackgroundResource(R.drawable.box2shapeorange);
+            anim.setAnimationListener(new Animation.AnimationListener(){
+                public void onAnimationStart(Animation anim) { }
+                public void onAnimationRepeat(Animation anim) { }
+                @Override
+                public void onAnimationEnd(Animation anim) {
+                    setScores(2);
+                }
+            });
+            btn_Answer2.startAnimation(anim);
         } else if(view.getId() == R.id.btnAnswer3){
-            setScores(3);
+            btn_Answer3.setBackgroundResource(R.drawable.box2shapeorange);
+            anim.setAnimationListener(new Animation.AnimationListener(){
+                public void onAnimationStart(Animation anim) { }
+                public void onAnimationRepeat(Animation anim) { }
+                @Override
+                public void onAnimationEnd(Animation anim) {
+                    setScores(3);
+                }
+            });
+            btn_Answer3.startAnimation(anim);
         } else if(view.getId() == R.id.btnAnswer4){
-            setScores(4);
+            btn_Answer4.setBackgroundResource(R.drawable.box2shapeorange);
+            anim.setAnimationListener(new Animation.AnimationListener(){
+                public void onAnimationStart(Animation anim) { }
+                public void onAnimationRepeat(Animation anim) { }
+                @Override
+                public void onAnimationEnd(Animation anim) {
+                    setScores(4);
+                }
+            });
+            btn_Answer4.startAnimation(anim);
         } else if(view.getId() == R.id.btnHelp1){
             helpFiftyFifty();
             gameTable.setHelpFiftyFiftyUsed();
@@ -721,7 +811,5 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             gameTable.setHelpChangeUsed();
         }
     }
-
-    private void updateName() {}
 
 }

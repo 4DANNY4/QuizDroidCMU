@@ -54,7 +54,6 @@ public class ScoreActivity extends AppCompatActivity implements View.OnClickList
         }
 
         insertHighscore();
-        //TODO: ADICIONAR HIGHSCORE
     }
 
     @Override
