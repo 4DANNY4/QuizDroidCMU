@@ -10,9 +10,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.IBinder;
-import android.preference.ListPreference;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -26,22 +24,21 @@ public class QuizService extends Service {
     public static final String INTENT_ACTION_UPDATE = "android.appwidget.action.APPWIDGET_UPDATE";
     public static final String INTENT_ACTION_WAIT = "android.appwidget.action.APPWIDGET_WAIT";
 
-    private boolean running = true;
     private Difficulty difficulty = new Difficulty(1, "", "");
     private ArrayList<Question> mQuiz = new ArrayList<>();
 
     private SharedPreferences mSettings;
 
+    String timer;
+
     @Override
     public void onCreate() {
         super.onCreate();
-        //startForeground(101, new Notification());
-        //WidgetTask task = new WidgetTask(getApplicationContext());
-        //task.execute();
         mSettings = PreferenceManager.getDefaultSharedPreferences(this);
 
         IntentFilter filter = new IntentFilter();
         filter.addAction("RESPONDED");
+        filter.addAction("UPDATE_PREF");
 
         registerReceiver(receiver, filter);
     }
@@ -64,7 +61,7 @@ public class QuizService extends Service {
         newIntent.putExtra("QuizAnswers4",mQuiz.get(0).getAnswers()[3]);
         sendBroadcast(newIntent);
         System.out.println("QuizService -> Question: " + mQuiz.get(0).getText());
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @Override
@@ -88,7 +85,7 @@ public class QuizService extends Service {
             }while (c.moveToNext());
         }
 
-        //Collections.shuffle(mQuiz);
+        Collections.shuffle(mQuiz);
 
         dbHelper.close();
         db.close();
@@ -112,6 +109,10 @@ public class QuizService extends Service {
                 }
                 widgetWait();
                 sendQuestion();
+            } else if(action.equals("UPDATE_PREF")) {
+                timer = intent.getStringExtra("TIMER");
+                System.out.println("UPDATE PREF -> " + timer); //TODO: REMOVE COMMENT
+                mSettings.edit().putString("pref_widget_timer", timer).apply();
             }
         }
     };
@@ -143,9 +144,10 @@ public class QuizService extends Service {
 
     private void widgetWait() {
         int timer = Integer.parseInt(mSettings.getString("pref_widget_timer", "10000"));
+        System.out.println("Wait Timer: " + timer);
         try {
             Thread.sleep(timer);
-            System.out.println("New question available!"); //TODO: SEND NOTIFICATION
+            System.out.println("New question available!");
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this)
                             .setSmallIcon(R.drawable.logo)

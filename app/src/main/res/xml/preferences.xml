@@ -13,7 +13,7 @@
             android:dialogTitle="Choose:"
             android:entries="@array/widget_timer"
             android:entryValues="@array/widget_timer_values"
-            android:defaultValue="30000"/>
+            android:defaultValue="10000"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="Game Manage" android:layout="@layout/pref_category">
         <Preference android:key="pref_key_manageQuestion"

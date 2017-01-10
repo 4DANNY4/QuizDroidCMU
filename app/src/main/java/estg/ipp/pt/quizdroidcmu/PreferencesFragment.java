@@ -1,21 +1,18 @@
 package estg.ipp.pt.quizdroidcmu;
 
-
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.support.v4.app.Fragment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class PreferencesFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -31,6 +28,8 @@ public class PreferencesFragment extends PreferenceFragment implements Preferenc
         manageQuestions.setOnPreferenceClickListener(this);
         Preference manageDifficulties = findPreference("pref_key_manageDifficulties");
         manageDifficulties.setOnPreferenceClickListener(this);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefs.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -90,7 +89,10 @@ public class PreferencesFragment extends PreferenceFragment implements Preferenc
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if(key.equals("pref_widget_timer")) {
-
+            String timer = sharedPreferences.getString(key, "10000");
+            Intent newIntent = new Intent("UPDATE_PREF");
+            newIntent.putExtra("TIMER", timer);
+            getActivity().sendBroadcast(newIntent);
         }
     }
 }
