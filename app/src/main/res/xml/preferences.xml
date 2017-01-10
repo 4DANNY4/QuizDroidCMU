@@ -6,7 +6,7 @@
         <CheckBoxPreference android:title="Unlimited style" android:summary="Unlimited game style."
             android:key="pref_unlimited" android:defaultValue="false"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="Widget Settings">
+    <PreferenceCategory android:title="Widget Settings" android:layout="@layout/pref_category">
         <ListPreference android:key="pref_widget_timer"
             android:title="Widget Timer"
             android:summary="Time between question updates"

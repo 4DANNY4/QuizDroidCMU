@@ -68,7 +68,7 @@ public class QuizService extends Service {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
-        Toast.makeText(getBaseContext(), "Service Stopped", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getBaseContext(), "Service Stopped", Toast.LENGTH_SHORT).show();
     }
 
     private void initData(){
@@ -76,7 +76,7 @@ public class QuizService extends Service {
 
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String sql = "SELECT * FROM tblQuestions LEFT JOIN tblAnswers ON tblQuestions.answerID = tblAnswers.id WHERE tblQuestions.difficultyID = '" + difficulty.getId()  + "'";
+        String sql = "SELECT * FROM tblQuestions LEFT JOIN tblAnswers ON tblQuestions.answerID = tblAnswers.id";
         Cursor c = db.rawQuery(sql,null);
         if (c != null && c.moveToFirst()){
             do {
