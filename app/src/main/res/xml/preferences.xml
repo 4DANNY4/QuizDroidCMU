@@ -6,6 +6,15 @@
         <CheckBoxPreference android:title="Unlimited style" android:summary="Unlimited game style."
             android:key="pref_unlimited" android:defaultValue="false"/>
     </PreferenceCategory>
+    <PreferenceCategory android:title="Widget Settings">
+        <ListPreference android:key="pref_widget_timer"
+            android:title="Widget Timer"
+            android:summary="Time between question updates"
+            android:dialogTitle="Choose:"
+            android:entries="@array/widget_timer"
+            android:entryValues="@array/widget_timer_values"
+            android:defaultValue="30000"/>
+    </PreferenceCategory>
     <PreferenceCategory android:title="Game Manage" android:layout="@layout/pref_category">
         <Preference android:key="pref_key_manageQuestion"
             android:title="Manage Questions"/>

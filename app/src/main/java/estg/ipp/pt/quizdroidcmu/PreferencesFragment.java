@@ -4,6 +4,7 @@ package estg.ipp.pt.quizdroidcmu;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -17,7 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PreferencesFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
+public class PreferencesFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private String password;
     private String correctPassword = "admin";
@@ -83,6 +84,13 @@ public class PreferencesFragment extends PreferenceFragment implements Preferenc
         } else {
             Toast.makeText(getActivity(), "Incorrect password!", Toast.LENGTH_SHORT).show();
             return false;
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key.equals("pref_widget_timer")) {
+
         }
     }
 }

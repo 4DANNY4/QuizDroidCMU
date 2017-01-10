@@ -25,9 +25,10 @@
         <activity android:name=".HighscoreContainer" />
         <activity android:name=".ListContinueActivity" />
 
-        <receiver android:name=".QuizWidget">
+        <receiver android:name=".QuizWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_WAIT" />
             </intent-filter>
 
             <meta-data
@@ -35,7 +36,7 @@
                 android:resource="@xml/quiz_widget_info" />
         </receiver>
         <service android:name=".QuizService"
-            android:process=":MyQuizService">
+            android:process=":ServiceProcess">
 
         </service>
     </application>
