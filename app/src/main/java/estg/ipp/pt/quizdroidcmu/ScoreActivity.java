@@ -42,8 +42,11 @@ public class ScoreActivity extends AppCompatActivity implements View.OnClickList
         txt_Score = (TextView) findViewById(R.id.txtScore);
         txt_unlimited = (TextView) findViewById(R.id.txtScoreUnlimited);
 
+
         txt_ScorePlayerName.setText(score.getPlayerName());
         txt_ScoreDifficulty.setText(score.getDifficulty().getName());
+
+
         txt_ScoreCorrectAnswers.setText("" + score.getCorrectAnswers());
         txt_Score.setText("" + score.getScore());
 

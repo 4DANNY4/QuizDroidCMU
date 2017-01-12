@@ -30,8 +30,8 @@ public class HighscoreContainer extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new TopHighscores(), "TOP HIGHSCORES");
-        adapter.addFragment(new TopHighscoresAnswer(), "TOP ANSWER STREAK");
+        adapter.addFragment(new TopHighscores(), "   TOP NORMAL   ");
+        adapter.addFragment(new TopHighscoresAnswer(), "TOP UNLIMITED");
         adapter.addFragment(new HighscoresByDifficulty(), "TOP BY DIFFICULTY");
         viewPager.setAdapter(adapter);
     }

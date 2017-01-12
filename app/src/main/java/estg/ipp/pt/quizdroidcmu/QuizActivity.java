@@ -150,6 +150,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             //TODO btn_Help3.setBackgroundResource(R.drawable.-----used);
             gameTable.setHelpChangeUsed();
             btn_Help4.setEnabled(false);
+            btn_Help4.setVisibility(View.GONE);
 
             QdDbHelper dbHelper = new QdDbHelper(this);
             SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -431,6 +432,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 btn_Answer2.setVisibility(View.VISIBLE);
                 btn_Answer3.setVisibility(View.VISIBLE);
                 btn_Answer4.setVisibility(View.VISIBLE);
+                btn_Answer1.setEnabled(true);
+                btn_Answer2.setEnabled(true);
+                btn_Answer3.setEnabled(true);
+                btn_Answer4.setEnabled(true);
                 nextQuestion();
             }
         });
@@ -623,8 +628,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         contacts.add("Harambe"); //55%
         contacts.add("Donald Trump"); // 20%
         contacts.add("SID"); // 1%
-        contacts.add("Potato"); //
-        contacts.add("Waifu"); // 7 90%5%
+        contacts.add("Potato"); // 90%
+        contacts.add("Waifu"); // 75%
         Collections.shuffle(contacts);
 
         FragmentManager fm = getFragmentManager();
@@ -755,6 +760,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         anim.setRepeatCount(2);
         anim.setRepeatMode(Animation.REVERSE);
         if (view.getId() == R.id.btnAnswer1){
+            btn_Answer1.setEnabled(false);
+            btn_Answer2.setEnabled(false);
+            btn_Answer3.setEnabled(false);
+            btn_Answer4.setEnabled(false);
             btn_Answer1.setBackgroundResource(R.drawable.box2shapeorange);
             anim.setAnimationListener(new Animation.AnimationListener(){
                 public void onAnimationStart(Animation anim) { }
@@ -766,6 +775,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             });
             btn_Answer1.startAnimation(anim);
         } else if(view.getId() == R.id.btnAnswer2){
+            btn_Answer1.setEnabled(false);
+            btn_Answer2.setEnabled(false);
+            btn_Answer3.setEnabled(false);
+            btn_Answer4.setEnabled(false);
             btn_Answer2.setBackgroundResource(R.drawable.box2shapeorange);
             anim.setAnimationListener(new Animation.AnimationListener(){
                 public void onAnimationStart(Animation anim) { }
@@ -777,6 +790,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             });
             btn_Answer2.startAnimation(anim);
         } else if(view.getId() == R.id.btnAnswer3){
+            btn_Answer1.setEnabled(false);
+            btn_Answer2.setEnabled(false);
+            btn_Answer3.setEnabled(false);
+            btn_Answer4.setEnabled(false);
             btn_Answer3.setBackgroundResource(R.drawable.box2shapeorange);
             anim.setAnimationListener(new Animation.AnimationListener(){
                 public void onAnimationStart(Animation anim) { }
@@ -788,6 +805,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             });
             btn_Answer3.startAnimation(anim);
         } else if(view.getId() == R.id.btnAnswer4){
+            btn_Answer1.setEnabled(false);
+            btn_Answer2.setEnabled(false);
+            btn_Answer3.setEnabled(false);
+            btn_Answer4.setEnabled(false);
             btn_Answer4.setBackgroundResource(R.drawable.box2shapeorange);
             anim.setAnimationListener(new Animation.AnimationListener(){
                 public void onAnimationStart(Animation anim) { }
