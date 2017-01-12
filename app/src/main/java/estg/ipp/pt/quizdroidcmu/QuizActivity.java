@@ -638,7 +638,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         helpPhoneDialog.show(fm, "fragment_help_phone_dialog");
 
         btn_Help2.setEnabled(false);
-        //TODO btn_Help2.setBackgroundResource(R.drawable.-----used);
+        btn_Help2.setBackgroundResource(R.drawable.ic_local_phone_black_48dp_used);
 
         QdDbHelper dbHelper = new QdDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -722,7 +722,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         btn_Help3.setEnabled(false);
-        //TODO btn_Help3.setBackgroundResource(R.drawable.-----used);
+        btn_Help3.setBackgroundResource(R.drawable.ic_people_black_48dp_used);
 
         String sql = "UPDATE tblGames " +
                 "SET helpPublic = '" + true + "'" +
@@ -749,7 +749,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
 
         btn_Help4.setEnabled(false);
-        //TODO btn_Help4.setBackgroundResource(R.drawable.-----used);
+        btn_Help4.setBackgroundResource(R.drawable.ic_autorenew_black_48dp_used);
     }
 
     @Override

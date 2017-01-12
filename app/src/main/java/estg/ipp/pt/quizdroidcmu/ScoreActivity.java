@@ -13,6 +13,7 @@ public class ScoreActivity extends AppCompatActivity implements View.OnClickList
 
     private Highscore score;
     private TextView txt_ScorePlayerName, txt_ScoreDifficulty, txt_ScoreCorrectAnswers, txt_Score, txt_unlimited;
+    private TextView txtView_score, txtView_Streak;
     private Button btnMenu, btnHighscores;
     private int savedGameID;
 
@@ -42,13 +43,23 @@ public class ScoreActivity extends AppCompatActivity implements View.OnClickList
         txt_Score = (TextView) findViewById(R.id.txtScore);
         txt_unlimited = (TextView) findViewById(R.id.txtScoreUnlimited);
 
-
         txt_ScorePlayerName.setText(score.getPlayerName());
         txt_ScoreDifficulty.setText(score.getDifficulty().getName());
+        if(score.isUnlimited()) {
+            txtView_score = (TextView) findViewById(R.id.txtViewScore);
+            txtView_score.setText("Total Correct Answers");
+            txt_ScoreCorrectAnswers.setText("" + score.getScore());
+
+            txtView_Streak = (TextView) findViewById(R.id.txtViewStreak);
+            txtView_Streak.setText("Points");
+            txt_Score.setText("" + score.getCorrectAnswers());
+        }else {
+            txt_ScoreCorrectAnswers.setText("" + score.getCorrectAnswers());
+            txt_Score.setText("" + score.getScore());
+        }
 
 
-        txt_ScoreCorrectAnswers.setText("" + score.getCorrectAnswers());
-        txt_Score.setText("" + score.getScore());
+
 
         if(score.isUnlimited()) {
             txt_unlimited.setText("Unlimited");
